@@ -47,10 +47,35 @@
   flex-shrink: 0;
 }
 
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .App-header h1 {
   margin: 0;
   font-size: 1.5rem;
   line-height: 1.2;
+}
+
+.readme-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.readme-link:hover {
+  background-color: #0056b3;
 }
 
 .App-main {

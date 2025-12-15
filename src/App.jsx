@@ -163,7 +163,17 @@ function App() {
       ) : (
         <>
       <header className="App-header">
-        <h1>HKU Course Planner</h1>
+        <div className="header-content">
+          <h1>HKU Course Planner</h1>
+          <a 
+            href="https://github.com/ShingZhanho/hku-auto-planner#readme" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="readme-link"
+          >
+            📖 How to Use
+          </a>
+        </div>
       </header>
 
       <main className="App-main">
