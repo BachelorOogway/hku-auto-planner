@@ -106,31 +106,32 @@ function WeeklyTimetable({ schedule, availableSemesters = [] }) {
   return (
     <div className="weekly-timetable">
       <div className="timetable-header">
-        <h2>Weekly Timetable</h2>
-        
-        <div className="semester-selector" style={{ marginBottom: '1rem' }}>
-          {availableSemesters.map((semester, index) => (
-            <button
-              key={semester}
-              className={`semester-btn ${selectedSemester === semester ? 'active' : ''}`}
-              onClick={() => {
-                setSelectedSemester(semester);
-                setCurrentWeekIndex(0);
-              }}
-              style={{
-                padding: '0.5rem 1rem',
-                marginRight: index < availableSemesters.length - 1 ? '0.5rem' : '0',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-                backgroundColor: selectedSemester === semester ? '#2196F3' : 'white',
-                color: selectedSemester === semester ? 'white' : '#333',
-                cursor: 'pointer',
-                fontWeight: selectedSemester === semester ? 'bold' : 'normal'
-              }}
-            >
-              {semester.replace(/^\d{4}-\d{2}\s*/, '')}
-            </button>
-          ))}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h2 style={{ margin: 0 }}>Weekly Timetable</h2>
+          <div className="semester-selector">
+            {availableSemesters.map((semester, index) => (
+              <button
+                key={semester}
+                className={`semester-btn ${selectedSemester === semester ? 'active' : ''}`}
+                onClick={() => {
+                  setSelectedSemester(semester);
+                  setCurrentWeekIndex(0);
+                }}
+                style={{
+                  padding: '0.5rem 1rem',
+                  marginLeft: index > 0 ? '0.5rem' : '0',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  backgroundColor: selectedSemester === semester ? '#2196F3' : 'white',
+                  color: selectedSemester === semester ? 'white' : '#333',
+                  cursor: 'pointer',
+                  fontWeight: selectedSemester === semester ? 'bold' : 'normal'
+                }}
+              >
+                {semester.replace(/^\d{4}-\d{2}\s*/, '')}
+              </button>
+            ))}
+          </div>
         </div>
         
         <div className="week-navigation">
