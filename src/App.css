@@ -6,8 +6,8 @@
 }
 
 .App-header {
-  text-align: center;
-  padding: 1rem;
+  text-align: left;
+  padding: 0.75rem 1rem;
   border-bottom: 2px solid #ccc;
   background-color: #f8f9fa;
   flex-shrink: 0;
@@ -15,14 +15,8 @@
 
 .App-header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   line-height: 1.2;
-}
-
-.App-header p {
-  margin: 0.25rem 0 0 0;
-  font-size: 0.9rem;
-  color: #666;
 }
 
 .App-main {

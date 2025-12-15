@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './CourseSelector.css';
 
 function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourseRemove }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedCourse, setExpandedCourse] = useState(null);
 
-  // Filter courses based on search (course code only)
-  const filteredCourses = coursesData.courses.filter(course => {
+  // Memoize filtered courses to avoid recalculating on every render
+  const filteredCourses = useMemo(() => {
+    if (!searchTerm.trim()) return coursesData.courses;
     const searchLower = searchTerm.toLowerCase();
-    return course.courseCode.toLowerCase().includes(searchLower);
-  });
+    return coursesData.courses.filter(course => 
+      course.courseCode.toLowerCase().includes(searchLower)
+    );
+  }, [searchTerm, coursesData.courses]);
 
   const handleCourseClick = (course) => {
     if (expandedCourse?.courseCode === course.courseCode) {
@@ -86,6 +89,11 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
     const fullCourse = coursesData.courses.find(c => c.courseCode === courseCode);
     onCourseSelect(fullCourse, newSections);
   };
+
+  // Memoize sorted cart courses
+  const sortedCartCourses = useMemo(() => {
+    return [...selectedCourses].sort((a, b) => a.courseCode.localeCompare(b.courseCode));
+  }, [selectedCourses]);
 
   return (
     <div className="course-selector">
@@ -197,9 +205,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
               Search and select courses to add them here.
             </div>
           ) : (
-            [...selectedCourses]
-              .sort((a, b) => a.courseCode.localeCompare(b.courseCode))
-              .map(course => {
+            sortedCartCourses.map(course => {
               const sectionsByTerm = {};
               const allSections = course.sections || [];
               

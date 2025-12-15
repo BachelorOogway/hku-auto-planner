@@ -12,6 +12,7 @@
   border-right: 2px solid #ddd;
   overflow: hidden;
 }
+
 .right-panel {
   width: 400px;
   min-width: 400px;
@@ -21,24 +22,27 @@
   background-color: #f8f9fa;
   overflow: hidden;
   flex-shrink: 0;
-} overflow: hidden;
 }
 
 .selector-header {
   padding: 1rem;
   border-bottom: 1px solid #ddd;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .selector-header h2 {
   margin: 0;
   font-size: 1.3rem;
+  padding: 0;
+  text-align: left;
 }
 
 .info-text {
   color: #666;
   font-size: 0.85rem;
   margin: 0.25rem 0 0 0;
+  text-align: left;
 }
 
 .search-box {

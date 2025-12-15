@@ -42,7 +42,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>HKU Course Planner</h1>
-        <p>Plan your semester courses automatically</p>
       </header>
 
       <main className="App-main">
