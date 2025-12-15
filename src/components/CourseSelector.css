@@ -141,22 +141,22 @@
 
 .cart-delete-btn {
   background: none;
-  border: none;
+  border: 1px solid #d32f2f;
   color: #d32f2f;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  padding: 0;
-  width: 28px;
-  height: 28px;
+  padding: 0.25rem 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
+  border-radius: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .cart-delete-btn:hover {
-  background-color: #ffebee;
+  background-color: #d32f2f;
+  color: white;
 }
 
 .cart-sections {

@@ -111,10 +111,23 @@
   box-shadow: none;
 }
 
+.plan-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
 .solution-card h3 {
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   font-size: 1.1rem;
   color: #007bff;
+}
+
+.plan-course-count {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: normal;
 }
 
 .solution-card ul {

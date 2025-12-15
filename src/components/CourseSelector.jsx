@@ -270,7 +270,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                       className="cart-delete-btn"
                       title="Remove course"
                     >
-                      ×
+                      Remove
                     </button>
                   </div>
 

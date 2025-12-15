@@ -55,7 +55,10 @@ function SolutionsList({ sem1Plans, sem2Plans, selectedSem1Index, selectedSem2In
       className={`solution-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
       onClick={() => !isDisabled && onSelect(index)}
     >
-      <h3>Plan {index + 1}</h3>
+      <div className="plan-card-header">
+        <h3>Plan {index + 1}</h3>
+        <span className="plan-course-count">{plan.length} {plan.length === 1 ? 'course' : 'courses'}</span>
+      </div>
       <ul>
         {plan.map((course, idx) => (
           <li key={idx}>
