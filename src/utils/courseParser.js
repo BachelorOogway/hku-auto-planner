@@ -167,6 +167,135 @@ export const hasTimeConflict = (session1, session2) => {
 };
 
 /**
+ * Check if two sections have time conflicts
+ */
+export const hasSectionConflict = (section1Sessions, section2Sessions) => {
+  for (const session1 of section1Sessions) {
+    for (const session2 of section2Sessions) {
+      if (hasTimeConflict(session1, session2)) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+/**
+ * Generate all possible schedule combinations
+ */
+export const generateSchedules = (selectedCourses, groupedData) => {
+  if (selectedCourses.length === 0) return [];
+  
+  // Prepare course sections data
+  const coursesWithSections = selectedCourses.map(course => ({
+    courseCode: course.courseCode,
+    courseTitle: course.courseTitle,
+    term: course.term,
+    sections: course.selectedSections.map(section => ({
+      section,
+      sessions: groupedData[course.courseCode].sections[section]
+    }))
+  }));
+  
+  // Generate all combinations recursively
+  const results = [];
+  
+  const generateCombinations = (index, currentSchedule) => {
+    if (index === coursesWithSections.length) {
+      // Check for conflicts in current schedule
+      const sessions = currentSchedule.flatMap(item => item.sessions);
+      let hasConflict = false;
+      
+      for (let i = 0; i < sessions.length - 1; i++) {
+        for (let j = i + 1; j < sessions.length; j++) {
+          if (hasTimeConflict(sessions[i], sessions[j])) {
+            hasConflict = true;
+            break;
+          }
+        }
+        if (hasConflict) break;
+      }
+      
+      if (!hasConflict) {
+        results.push(currentSchedule);
+      }
+      return;
+    }
+    
+    const course = coursesWithSections[index];
+    for (const sectionData of course.sections) {
+      generateCombinations(index + 1, [
+        ...currentSchedule,
+        {
+          courseCode: course.courseCode,
+          courseTitle: course.courseTitle,
+          term: course.term,
+          section: sectionData.section,
+          sessions: sectionData.sessions
+        }
+      ]);
+    }
+  };
+  
+  generateCombinations(0, []);
+  return results;
+};
+
+/**
+ * Get date range for all sessions in a schedule
+ */
+export const getScheduleDateRange = (schedule) => {
+  let minDate = null;
+  let maxDate = null;
+  
+  schedule.forEach(course => {
+    course.sessions.forEach(session => {
+      const start = new Date(session.startDate);
+      const end = new Date(session.endDate);
+      
+      if (!minDate || start < minDate) minDate = start;
+      if (!maxDate || end > maxDate) maxDate = end;
+    });
+  });
+  
+  return { minDate, maxDate };
+};
+
+/**
+ * Get week numbers for a date range
+ */
+export const getWeekNumbers = (minDate, maxDate) => {
+  if (!minDate || !maxDate) return [];
+  
+  const weeks = [];
+  const current = new Date(minDate);
+  current.setDate(current.getDate() - current.getDay()); // Start from Sunday
+  
+  let weekNum = 1;
+  while (current <= maxDate) {
+    weeks.push({
+      weekNumber: weekNum,
+      startDate: new Date(current),
+      endDate: new Date(current.getTime() + 6 * 24 * 60 * 60 * 1000)
+    });
+    current.setDate(current.getDate() + 7);
+    weekNum++;
+  }
+  
+  return weeks;
+};
+
+/**
+ * Check if a session occurs in a specific week
+ */
+export const isSessionInWeek = (session, weekStart, weekEnd) => {
+  const sessionStart = new Date(session.startDate);
+  const sessionEnd = new Date(session.endDate);
+  
+  return sessionStart <= weekEnd && sessionEnd >= weekStart;
+};
+
+/**
  * Process raw data into structured course information
  */
 export const processCoursesData = (rawData) => {

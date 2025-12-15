@@ -1,0 +1,86 @@
+.solutions-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.solutions-header {
+  padding: 1rem;
+  border-bottom: 2px solid #dee2e6;
+  background-color: white;
+  flex-shrink: 0;
+}
+
+.solutions-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.solutions-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.solution-card {
+  background-color: white;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.solution-card:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+}
+
+.solution-card.selected {
+  border-color: #007bff;
+  background-color: #e7f3ff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.solution-card h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1rem;
+  color: #007bff;
+}
+
+.semester-group {
+  margin-bottom: 0.75rem;
+}
+
+.semester-group:last-child {
+  margin-bottom: 0;
+}
+
+.semester-group h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.semester-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.semester-group li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.course-title-small {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: normal;
+  margin-top: 0.2rem;
+}
