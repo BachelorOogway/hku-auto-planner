@@ -268,13 +268,20 @@ export const hasSectionConflict = (section1Sessions, section2Sessions) => {
  * 5. For each semester distribution, try all subclass combinations
  * 6. Check for time conflicts within each semester
  */
-export const generateSchedules = (selectedCourses, groupedData) => {
-  if (selectedCourses.length === 0) return [];
+export const generateSchedules = (selectedCourses, groupedData, availableTerms = []) => {
+  if (selectedCourses.length === 0) return { schedules: [], semesterPlans: { sem1: [], sem2: [] }, availableTerms: [] };
   
   const MAX_COURSES_PER_SEMESTER = 6;
   
+  // Determine semester identifiers from availableTerms
+  // Handle case where there might be only one term or more than two
+  const term1 = availableTerms[0] || 'Semester 1';
+  const term2 = availableTerms[1] || availableTerms[0] || 'Semester 2';
+  
   console.log('\n=== SCHEDULE GENERATION START ===');
   console.log('Total selected courses:', selectedCourses.length);
+  console.log('Available terms:', availableTerms);
+  console.log('Using term1:', term1, 'term2:', term2);
   
   // Step 1: Categorize courses based on which sections the user actually selected
   const onlySem1 = [];
@@ -301,9 +308,9 @@ export const generateSchedules = (selectedCourses, groupedData) => {
         );
         
         if (availableSections.length > 0) {
-          if (term === '2025-26 Sem 1') {
+          if (term === term1) {
             hasValidSem1Sections = true;
-          } else if (term === '2025-26 Sem 2') {
+          } else if (term === term2) {
             hasValidSem2Sections = true;
           }
         }
@@ -427,8 +434,8 @@ export const generateSchedules = (selectedCourses, groupedData) => {
       return validCourses;
     };
     
-    const sem1CoursesWithSections = prepareSemesterCourses(sem1Courses, '2025-26 Sem 1');
-    const sem2CoursesWithSections = prepareSemesterCourses(sem2Courses, '2025-26 Sem 2');
+    const sem1CoursesWithSections = prepareSemesterCourses(sem1Courses, term1);
+    const sem2CoursesWithSections = prepareSemesterCourses(sem2Courses, term2);
     
     // Generate all subclass combinations for a semester
     const generateSemesterCombinations = (courses, semesterName) => {
@@ -585,7 +592,8 @@ export const generateSchedules = (selectedCourses, groupedData) => {
     semesterPlans: {
       sem1: semesterPlans.sem1,
       sem2: semesterPlans.sem2
-    }
+    },
+    availableTerms: availableTerms.length > 0 ? availableTerms : [term1, term2].filter((t, i, arr) => arr.indexOf(t) === i)
   };
 };
 
@@ -659,10 +667,20 @@ export const processCoursesData = (rawData) => {
   const courses = getUniqueCourses(grouped);
   console.log('Unique courses:', courses.length);
   
+  // Extract all unique terms from the data
+  const termsSet = new Set();
+  filtered.forEach(row => {
+    const term = row['TERM'];
+    if (term) termsSet.add(term);
+  });
+  const availableTerms = Array.from(termsSet).sort();
+  console.log('Available terms:', availableTerms);
+  
   return {
     courses: courses.sort((a, b) => a.courseCode.localeCompare(b.courseCode)),
     grouped,
     totalCourses: courses.length,
-    totalSessions: filtered.length
+    totalSessions: filtered.length,
+    availableTerms
   };
 };

@@ -36,10 +36,10 @@ function FileUploader({ onDataLoaded }) {
     
     try {
       // Use relative path that works with Vite's base configuration
-      const { csv, json } = await loadDefaultExcel('./2025-26_class_timetable_20250831.xlsx');
+      const { csv, json } = await loadDefaultExcel('./built-in-data.xlsx');
       
-      setFileName('2025-26_class_timetable_20250831.xlsx (default)');
-      onDataLoaded({ csv, json, fileName: '2025-26_class_timetable_20250831.xlsx' });
+      setFileName('built-in-data.xlsx (default)');
+      onDataLoaded({ csv, json, fileName: 'built-in-data.xlsx' });
     } catch (err) {
       setError('Error loading default file: ' + err.message);
       console.error(err);
@@ -58,7 +58,7 @@ function FileUploader({ onDataLoaded }) {
           disabled={loading}
           className="default-button"
         >
-          {loading ? 'Loading...' : 'Use Default Timetable (2025-26)'}
+          {loading ? 'Loading...' : 'Use Built-in Timetable'}
         </button>
         
         <div className="divider">OR</div>

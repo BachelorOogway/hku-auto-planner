@@ -2,9 +2,9 @@ import { useState, useMemo } from 'react';
 import { getScheduleDateRange, getWeekNumbers, isSessionInWeek, timeToMinutes, formatTime } from '../utils/courseParser';
 import './WeeklyTimetable.css';
 
-function WeeklyTimetable({ schedule, availableSemesters = ['2025-26 Sem 1', '2025-26 Sem 2'] }) {
+function WeeklyTimetable({ schedule, availableSemesters = [] }) {
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
-  const [selectedSemester, setSelectedSemester] = useState(availableSemesters[0] || '2025-26 Sem 1');
+  const [selectedSemester, setSelectedSemester] = useState(availableSemesters[0] || 'Semester 1');
 
   console.log('WeeklyTimetable received schedule:', schedule);
 
@@ -109,47 +109,28 @@ function WeeklyTimetable({ schedule, availableSemesters = ['2025-26 Sem 1', '202
         <h2>Weekly Timetable</h2>
         
         <div className="semester-selector" style={{ marginBottom: '1rem' }}>
-          <button
-            className={`semester-btn ${selectedSemester === '2025-26 Sem 1' ? 'active' : ''}`}
-            onClick={() => {
-              setSelectedSemester('2025-26 Sem 1');
-              setCurrentWeekIndex(0);
-            }}
-            disabled={!availableSemesters.includes('2025-26 Sem 1')}
-            style={{
-              padding: '0.5rem 1rem',
-              marginRight: '0.5rem',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              backgroundColor: selectedSemester === '2025-26 Sem 1' ? '#2196F3' : 'white',
-              color: selectedSemester === '2025-26 Sem 1' ? 'white' : '#333',
-              cursor: availableSemesters.includes('2025-26 Sem 1') ? 'pointer' : 'not-allowed',
-              fontWeight: selectedSemester === '2025-26 Sem 1' ? 'bold' : 'normal',
-              opacity: availableSemesters.includes('2025-26 Sem 1') ? 1 : 0.5
-            }}
-          >
-            Semester 1
-          </button>
-          <button
-            className={`semester-btn ${selectedSemester === '2025-26 Sem 2' ? 'active' : ''}`}
-            onClick={() => {
-              setSelectedSemester('2025-26 Sem 2');
-              setCurrentWeekIndex(0);
-            }}
-            disabled={!availableSemesters.includes('2025-26 Sem 2')}
-            style={{
-              padding: '0.5rem 1rem',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              backgroundColor: selectedSemester === '2025-26 Sem 2' ? '#2196F3' : 'white',
-              color: selectedSemester === '2025-26 Sem 2' ? 'white' : '#333',
-              cursor: availableSemesters.includes('2025-26 Sem 2') ? 'pointer' : 'not-allowed',
-              fontWeight: selectedSemester === '2025-26 Sem 2' ? 'bold' : 'normal',
-              opacity: availableSemesters.includes('2025-26 Sem 2') ? 1 : 0.5
-            }}
-          >
-            Semester 2
-          </button>
+          {availableSemesters.map((semester, index) => (
+            <button
+              key={semester}
+              className={`semester-btn ${selectedSemester === semester ? 'active' : ''}`}
+              onClick={() => {
+                setSelectedSemester(semester);
+                setCurrentWeekIndex(0);
+              }}
+              style={{
+                padding: '0.5rem 1rem',
+                marginRight: index < availableSemesters.length - 1 ? '0.5rem' : '0',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                backgroundColor: selectedSemester === semester ? '#2196F3' : 'white',
+                color: selectedSemester === semester ? 'white' : '#333',
+                cursor: 'pointer',
+                fontWeight: selectedSemester === semester ? 'bold' : 'normal'
+              }}
+            >
+              {semester.replace(/^\d{4}-\d{2}\s*/, '')}
+            </button>
+          ))}
         </div>
         
         <div className="week-navigation">

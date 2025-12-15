@@ -97,7 +97,7 @@ function App() {
           firstSectionSessions: processedData.grouped[key].sections[Object.keys(processedData.grouped[key].sections)[0]]
         })));
         
-        const result = generateSchedules(selectedCourses, processedData.grouped);
+        const result = generateSchedules(selectedCourses, processedData.grouped, processedData.availableTerms);
         
         console.log(`Generated ${result.schedules.length} possible schedules`);
         console.log(`Semester 1 plans: ${result.semesterPlans.sem1.length}`);
@@ -213,10 +213,7 @@ function App() {
                 ...(selectedSem1Index !== null ? solutions.semesterPlans.sem1[selectedSem1Index] : []),
                 ...(selectedSem2Index !== null ? solutions.semesterPlans.sem2[selectedSem2Index] : [])
               ]}
-              availableSemesters={[
-                ...(solutions.semesterPlans.sem1.length > 0 ? ['2025-26 Sem 1'] : []),
-                ...(solutions.semesterPlans.sem2.length > 0 ? ['2025-26 Sem 2'] : [])
-              ]}
+              availableSemesters={solutions.availableTerms || []}
             />
           </div>
         )}
