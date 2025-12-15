@@ -1,15 +1,41 @@
 import { useState } from 'react'
 import './App.css'
 import FileUploader from './components/FileUploader'
+import CourseSelector from './components/CourseSelector'
+import { processCoursesData } from './utils/courseParser'
 
 function App() {
   const [courseData, setCourseData] = useState(null);
+  const [processedData, setProcessedData] = useState(null);
+  const [selectedCourses, setSelectedCourses] = useState([]);
 
   const handleDataLoaded = (data) => {
     setCourseData(data);
-    console.log('Course data loaded:', data);
-    console.log('CSV preview:', data.csv.substring(0, 500));
-    console.log('JSON preview:', data.json.slice(0, 5));
+    
+    console.log('Raw data sample:', data.json.slice(0, 3));
+    
+    // Process the data
+    const processed = processCoursesData(data.json);
+    setProcessedData(processed);
+    
+    console.log('Course data loaded and processed');
+    console.log('Total courses:', processed.totalCourses);
+    console.log('Total sessions:', processed.totalSessions);
+    console.log('Sample courses:', processed.courses.slice(0, 10));
+    console.log('All course codes:', processed.courses.map(c => c.courseCode));
+  };
+
+  const handleCourseSelect = (course, selectedSections) => {
+    setSelectedCourses(prev => {
+      // Remove if already exists
+      const filtered = prev.filter(c => c.courseCode !== course.courseCode);
+      // Add with new sections
+      return [...filtered, { ...course, selectedSections }];
+    });
+  };
+
+  const handleCourseRemove = (courseCode) => {
+    setSelectedCourses(prev => prev.filter(c => c.courseCode !== courseCode));
   };
 
   return (
@@ -20,17 +46,15 @@ function App() {
       </header>
 
       <main className="App-main">
-        <FileUploader onDataLoaded={handleDataLoaded} />
+        {!courseData && <FileUploader onDataLoaded={handleDataLoaded} />}
         
-        {courseData && (
-          <div className="data-preview">
-            <h3>Data Loaded Successfully!</h3>
-            <p>Total courses: {courseData.json.length}</p>
-            <details>
-              <summary>View CSV Preview</summary>
-              <pre>{courseData.csv.substring(0, 1000)}...</pre>
-            </details>
-          </div>
+        {processedData && (
+          <CourseSelector
+            coursesData={processedData}
+            selectedCourses={selectedCourses}
+            onCourseSelect={handleCourseSelect}
+            onCourseRemove={handleCourseRemove}
+          />
         )}
       </main>
     </div>
