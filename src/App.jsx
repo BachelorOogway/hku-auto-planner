@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import FileUploader from './components/FileUploader'
 import CourseSelector from './components/CourseSelector'
@@ -8,6 +8,7 @@ import WeeklyTimetable from './components/WeeklyTimetable'
 import { processCoursesData, generateSchedules } from './utils/courseParser'
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
   const [courseData, setCourseData] = useState(null);
   const [processedData, setProcessedData] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState([]);
@@ -16,6 +17,18 @@ function App() {
   const [selectedSem1Index, setSelectedSem1Index] = useState(null);
   const [selectedSem2Index, setSelectedSem2Index] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
+      setIsMobile(isMobileDevice);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleDataLoaded = (data) => {
     setCourseData(data);
@@ -139,6 +152,16 @@ function App() {
 
   return (
     <div className="App">
+      {isMobile ? (
+        <div className="mobile-block">
+          <div className="mobile-block-content">
+            <h1>📱 Desktop Only</h1>
+            <p>This application is only available on desktop devices.</p>
+            <p>Please visit this site on a computer with a screen width of at least 1024px.</p>
+          </div>
+        </div>
+      ) : (
+        <>
       <header className="App-header">
         <h1>HKU Course Planner</h1>
       </header>
@@ -206,6 +229,8 @@ function App() {
       )}
 
       {isLoading && <LoadingSpinner />}
+        </>
+      )}
     </div>
   )
 }
