@@ -276,15 +276,12 @@ export const generateSchedules = (selectedCourses, groupedData) => {
   console.log('\n=== SCHEDULE GENERATION START ===');
   console.log('Total selected courses:', selectedCourses.length);
   
-  // Step 1: Categorize courses by their semester offerings
+  // Step 1: Categorize courses based on which sections the user actually selected
   const onlySem1 = [];
   const onlySem2 = [];
   const bothSemesters = [];
   
   selectedCourses.forEach(course => {
-    const hasSem1 = course.terms.includes('2025-26 Sem 1');
-    const hasSem2 = course.terms.includes('2025-26 Sem 2');
-    
     const courseInfo = {
       code: course.courseCode,
       title: course.courseTitle,
@@ -292,22 +289,46 @@ export const generateSchedules = (selectedCourses, groupedData) => {
       selectedSections: course.selectedSections
     };
     
-    if (hasSem1 && hasSem2) {
+    // Check which semesters have the user's selected sections
+    let hasValidSem1Sections = false;
+    let hasValidSem2Sections = false;
+    
+    course.terms.forEach(term => {
+      const groupKey = `${course.courseCode}-${term}`;
+      if (groupedData[groupKey]) {
+        const availableSections = course.selectedSections.filter(
+          section => groupedData[groupKey].sections[section] !== undefined
+        );
+        
+        if (availableSections.length > 0) {
+          if (term === '2025-26 Sem 1') {
+            hasValidSem1Sections = true;
+          } else if (term === '2025-26 Sem 2') {
+            hasValidSem2Sections = true;
+          }
+        }
+      }
+    });
+    
+    // Categorize based on where user's selected sections actually exist
+    if (hasValidSem1Sections && hasValidSem2Sections) {
       bothSemesters.push(courseInfo);
-    } else if (hasSem1) {
+    } else if (hasValidSem1Sections) {
       onlySem1.push(courseInfo);
-    } else if (hasSem2) {
+    } else if (hasValidSem2Sections) {
       onlySem2.push(courseInfo);
+    } else {
+      console.error(`No valid sections found for ${course.courseCode} in any semester`);
     }
   });
   
-  console.log('Only Sem 1:', onlySem1.map(c => c.code).join(', '));
-  console.log('Only Sem 2:', onlySem2.map(c => c.code).join(', '));
-  console.log('Both Semesters:', bothSemesters.map(c => c.code).join(', '));
+  console.log('Only Sem 1 (based on selected sections):', onlySem1.map(c => c.code).join(', '));
+  console.log('Only Sem 2 (based on selected sections):', onlySem2.map(c => c.code).join(', '));
+  console.log('Both Semesters (based on selected sections):', bothSemesters.map(c => c.code).join(', '));
   
   // Step 2: Check if single-semester courses already exceed limit
   if (onlySem1.length > MAX_COURSES_PER_SEMESTER) {
-    console.error(`❌ IMPOSSIBLE: ${onlySem1.length} courses only offered in Sem 1, exceeds limit of ${MAX_COURSES_PER_SEMESTER}`);
+    console.error(`❌ IMPOSSIBLE: ${onlySem1.length} courses can only be scheduled in Sem 1, exceeds limit of ${MAX_COURSES_PER_SEMESTER}`);
     console.error('   Courses:', onlySem1.map(c => c.code).join(', '));
     return [];
   }
@@ -367,25 +388,39 @@ export const generateSchedules = (selectedCourses, groupedData) => {
   const trySubclassCombinations = (sem1Courses, sem2Courses) => {
     // Prepare course-section data for each semester
     const prepareSemesterCourses = (courses, targetSemester) => {
-      return courses.map(course => {
+      const validCourses = [];
+      
+      courses.forEach(course => {
         // Look up session data using courseCode-term key
         const groupKey = `${course.code}-${targetSemester}`;
         
         if (!groupedData[groupKey]) {
-          console.error(`Missing data for ${groupKey}. Available keys:`, Object.keys(groupedData).filter(k => k.startsWith(course.code)));
-          throw new Error(`Course ${course.code} not found for ${targetSemester}`);
+          console.warn(`Course ${course.code} not offered in ${targetSemester}, skipping`);
+          return;
         }
         
-        return {
-          courseCode: course.code,
-          courseTitle: course.title,
-          term: targetSemester,  // The semester we're planning to take it
-          sections: course.selectedSections.map(section => ({
+        // Filter to only include sections that the user selected AND exist in this semester
+        const availableSections = course.selectedSections
+          .filter(section => groupedData[groupKey].sections[section] !== undefined)
+          .map(section => ({
             section,
             sessions: groupedData[groupKey].sections[section]
-          }))
-        };
+          }));
+        
+        if (availableSections.length === 0) {
+          console.warn(`None of the selected sections for ${course.code} are available in ${targetSemester}, skipping this course for this semester`);
+          return;
+        }
+        
+        validCourses.push({
+          courseCode: course.code,
+          courseTitle: course.title,
+          term: targetSemester,
+          sections: availableSections
+        });
       });
+      
+      return validCourses;
     };
     
     const sem1CoursesWithSections = prepareSemesterCourses(sem1Courses, '2025-26 Sem 1');
@@ -476,16 +511,31 @@ export const generateSchedules = (selectedCourses, groupedData) => {
     validSchedules: results.length
   });
   
-  if (results.length === 0) {
-    console.error('❌ No valid schedules found!');
-    console.error('This means all subclass combinations had time conflicts.');
-  } else {
-    console.log(`✅ Found ${results.length} valid schedule(s)`);
-    console.log('First schedule:', results[0].map(c => `${c.courseCode}-${c.section} (${c.term})`).join(', '));
+  // Filter out schedules that don't include all selected courses
+  const expectedCourseCount = selectedCourses.length;
+  const completeSchedules = results.filter(schedule => {
+    const uniqueCourses = new Set(schedule.map(item => item.courseCode));
+    return uniqueCourses.size === expectedCourseCount;
+  });
+  
+  if (completeSchedules.length < results.length) {
+    console.log(`Filtered out ${results.length - completeSchedules.length} incomplete schedules`);
   }
   
-  // Sort results to prioritize balanced schedules
-  results.sort((a, b) => {
+  if (completeSchedules.length === 0) {
+    console.error('❌ No valid schedules found!');
+    if (results.length > 0) {
+      console.error('All generated schedules were missing some courses. This may be because some courses have no valid sections in certain semesters.');
+    } else {
+      console.error('This means all subclass combinations had time conflicts.');
+    }
+  } else {
+    console.log(`✅ Found ${completeSchedules.length} complete schedule(s)`);
+    console.log('First schedule:', completeSchedules[0].map(c => `${c.courseCode}-${c.section} (${c.term})`).join(', '));
+  }
+  
+  // Sort complete schedules to prioritize balanced schedules
+  completeSchedules.sort((a, b) => {
     const getSemesterCounts = (schedule) => {
       const counts = {};
       schedule.forEach(item => {
@@ -505,7 +555,7 @@ export const generateSchedules = (selectedCourses, groupedData) => {
     return variance(countsA) - variance(countsB);
   });
   
-  return results;
+  return completeSchedules;
 };
 
 export const getScheduleDateRange = (schedule) => {
