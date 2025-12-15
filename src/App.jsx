@@ -62,7 +62,7 @@ function App() {
   };
 
   const handleSolve = () => {
-    const MAX_COURSES = 14;
+    const MAX_COURSES = 12;
     
     if (selectedCourses.length === 0) {
       setErrorMessage('Please select at least one course.');
@@ -77,7 +77,7 @@ function App() {
     // Check if all courses have at least one section selected
     const coursesWithoutSections = selectedCourses.filter(c => !c.selectedSections || c.selectedSections.length === 0);
     if (coursesWithoutSections.length > 0) {
-      setErrorMessage('Please select at least one section for each course.');
+      setErrorMessage('Please select at least one subclass for each course.');
       return;
     }
 
@@ -102,8 +102,8 @@ function App() {
         
         if (result.schedules.length === 0) {
           setErrorMessage(
-            'No possible schedule found with the selected courses and sections. ' +
-            'Please try selecting more sections or changing your course selection.'
+            'No possible schedule found with the selected courses and subclasses. ' +
+            'Please try selecting more subclasses or changing your course selection.'
           );
           setSolutions(null);
         } else {

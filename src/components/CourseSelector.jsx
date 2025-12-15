@@ -5,7 +5,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedCourse, setExpandedCourse] = useState(null);
 
-  const MAX_COURSES = 14;
+  const MAX_COURSES = 12;
 
   // Memoize filtered courses to avoid recalculating on every render
   const filteredCourses = useMemo(() => {
@@ -143,7 +143,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                 </div>
                 <div className="course-meta">
                   <span className="course-dept">{course.offerDept}</span>
-                  <span className="section-count">{course.sectionCount} section(s)</span>
+                  <span className="section-count">{course.sectionCount} subclass(es)</span>
                   <span className="course-term" style={{color: '#2196F3', fontSize: '0.85rem'}}>
                     {course.terms.join(', ')}
                   </span>
@@ -154,48 +154,54 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
               {isExpanded && (
                 <div className="course-details">
                   <div className="section-selector">
-                    <h4>Select Sections (can choose multiple):</h4>
+                    <h4>Select Subclasses (can choose multiple):</h4>
                     <div className="section-options">
-                      <button
-                        className={`section-btn ${selected && Array.isArray(selected.selectedSections) && selected.selectedSections.length === course.sections.length ? 'active' : ''}`}
-                        onClick={() => handleSectionSelection(course, null, 'any')}
-                      >
-                        All Sections
-                      </button>
-                      {course.sections.map(section => {
-                        // Find which term this section belongs to
-                        let sectionData = null;
-                        for (const term of course.terms || []) {
-                          const groupKey = `${course.courseCode}-${term}`;
-                          if (coursesData.grouped[groupKey]?.sections[section]) {
-                            sectionData = coursesData.grouped[groupKey].sections[section];
-                            break;
-                          }
-                        }
-                        
-                        const instructors = sectionData 
-                          ? [...new Set(sectionData.map(s => s.instructor).filter(i => i))]
+                      <div className="section-group">
+                        <button
+                          className={`section-btn ${selected && Array.isArray(selected.selectedSections) && selected.selectedSections.length === course.sections.length ? 'active' : ''}`}
+                          onClick={() => handleSectionSelection(course, null, 'any')}
+                        >
+                          All Subclasses
+                        </button>
+                      </div>
+                      
+                      {course.terms.map(term => {
+                        // Get sections for this term
+                        const groupKey = `${course.courseCode}-${term}`;
+                        const termSections = coursesData.grouped[groupKey] 
+                          ? Object.keys(coursesData.grouped[groupKey].sections)
                           : [];
                         
+                        if (termSections.length === 0) return null;
+                        
                         return (
-                          <button
-                            key={section}
-                            className={`section-btn ${isSectionSelected(course.courseCode, section) ? 'active' : ''}`}
-                            onClick={() => handleSectionSelection(course, section, 'specific')}
-                          >
-                            <div className="section-btn-content">
-                              <span className="section-name">Section {section}</span>
-                              {instructors.length > 0 && (
-                                <span className="section-instructor">{instructors.join(', ')}</span>
-                              )}
-                            </div>
-                          </button>
+                          <div key={term} className="section-group">
+                            <div className="section-group-header">{term}</div>
+                            {termSections.map(section => {
+                              const sectionData = coursesData.grouped[groupKey].sections[section];
+                              const instructors = sectionData 
+                                ? [...new Set(sectionData.map(s => s.instructor).filter(i => i))]
+                                : [];
+                              
+                              return (
+                                <button
+                                  key={section}
+                                  className={`section-btn ${isSectionSelected(course.courseCode, section) ? 'active' : ''}`}
+                                  onClick={() => handleSectionSelection(course, section, 'specific')}
+                                >
+                                  <div className="section-btn-content">
+                                    <span className="section-name">Subclass {section}</span>
+                                    {instructors.length > 0 && (
+                                      <span className="section-instructor">{instructors.join(', ')}</span>
+                                    )}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
                         );
                       })}
                     </div>
-                  </div>
-                  <div className="term-info">
-                    <strong>Term:</strong> {course.term}
                   </div>
                 </div>
               )}
@@ -295,7 +301,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                                 htmlFor={`${course.courseCode}-${section}`}
                                 className="cart-section-label"
                               >
-                                <span className="cart-section-name">Section {section}</span>
+                                <span className="cart-section-name">Subclass {section}</span>
                                 {instructors.length > 0 && (
                                   <span className="cart-section-instructor">{instructors.join(', ')}</span>
                                 )}

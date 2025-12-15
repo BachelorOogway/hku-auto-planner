@@ -280,8 +280,24 @@
 
 .section-options {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-group {
+  display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.section-group-header {
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #007bff;
+  padding: 0.25rem 0;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .section-btn {
