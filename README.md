@@ -34,9 +34,11 @@ So that you don't have to bang your head against the computer trying to figure o
 
         Click on the green button "Use Default Timetable".
 
-        > [!WARNING] During course selection period, the University will update the course data frequently.
-        > The built-in data may be outdated.
-        > It is recommended that you download the latest data EACH TIME you use the tool.
+> [!WARNING]
+>
+> During course selection period, the University will update the course data frequently.
+> The built-in data may be outdated.
+> It is recommended that you download the latest data EACH TIME you use the tool.
 
 3. On the left side, you can type in the course code to search for a course.
 
@@ -47,9 +49,11 @@ So that you don't have to bang your head against the computer trying to figure o
     Added courses will appear in the shopping cart on the right side.
     You can further adjust the subclass selections there, or remove the course by clicking the red cross button.
 
-    > [!TIP] The system supports adding at most 12 courses in the same year.
-    > Each semester will get up to 6 courses.
-    > Full year courses (suffixed with "FY") are not supported at this time.
+> [!TIP]
+>
+> The system supports adding at most 12 courses in the same year.
+> Each semester will get up to 6 courses.
+> Full year courses (suffixed with "FY") are not supported at this time.
 
 4. When you're done selecting courses, click on the green "Solve" button in the bottom right corner.
 
@@ -61,8 +65,12 @@ So that you don't have to bang your head against the computer trying to figure o
     Each list contains unique timetables for you to choose from.
     Click on a plan to see its calendar view on the right side.
 
-    > [!TIP] If the plan you selected has overlapping classes with the other semester, those plans will be disabled because you cannot take the same class twice.
+> [!TIP]
+>
+> If the plan you selected has overlapping classes with the other semester, those plans will be disabled because you cannot take the same class twice.
 
-    > [!TIP] If your selected courses only fit in one semester, you will only see one list of plans.
+> [!TIP]
+>
+> If your selected courses only fit in one semester, you will only see one list of plans.
 
 6. Explore the plans and choose the one that fits all your needs, or click on "Back to Search" to modify your course selections and try again.
