@@ -1,8 +1,36 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --border-color: #cccccc;
+  --border-light: #dddddd;
+  --hover-bg: #f0f0f0;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --border-color: #404040;
+  --border-light: #333333;
+  --hover-bg: #3a3a3a;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
 .App {
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .mobile-block {
@@ -11,15 +39,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: var(--bg-primary);
   padding: 2rem;
   box-sizing: border-box;
 }
 
 .mobile-block-content {
-  background: white;
+  background: var(--bg-primary);
   padding: 3rem 2rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   text-align: center;
   max-width: 500px;
@@ -29,21 +57,21 @@
 .mobile-block-content h1 {
   margin: 0 0 1.5rem 0;
   font-size: 2.5rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .mobile-block-content p {
   margin: 0.75rem 0;
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
 .App-header {
   text-align: left;
   padding: 0.75rem 1rem;
-  border-bottom: 2px solid #ccc;
-  background-color: #f8f9fa;
+  border-bottom: 2px solid var(--border-color);
+  background-color: var(--bg-secondary);
   flex-shrink: 0;
 }
 
@@ -87,9 +115,9 @@
 }
 
 .App-footer {
-  border-top: 2px solid #ddd;
+  border-top: 2px solid var(--border-light);
   padding: 1rem 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--bg-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -259,7 +287,7 @@ h1 {
 
 .divider {
   margin: 1.5rem 0;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: bold;
 }
 
@@ -276,8 +304,10 @@ h1 {
 input[type="file"] {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .success-message {
@@ -300,4 +330,33 @@ input[type="file"] {
   margin-top: 1rem;
   padding: 1rem;
   color: #666;
+}
+
+/* Dark mode specific overrides */
+[data-theme="dark"] .success-message {
+  background-color: #1e4620;
+  color: #90ee90;
+}
+
+[data-theme="dark"] .error-message {
+  background-color: #4a1a1a;
+  color: #ffb3b3;
+}
+
+[data-theme="dark"] .default-button:disabled {
+  background-color: #4a4a4a;
+}
+
+[data-theme="dark"] .footer-warning {
+  background-color: rgba(255, 152, 0, 0.15);
+  border-color: #ff9800;
+  color: #ffb74d;
+}
+
+[data-theme="dark"] .readme-link {
+  background-color: #1976d2;
+}
+
+[data-theme="dark"] .readme-link:hover {
+  background-color: #1565c0;
 }

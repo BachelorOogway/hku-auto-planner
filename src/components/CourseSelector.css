@@ -9,7 +9,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  border-right: 2px solid #ddd;
+  border-right: 2px solid var(--border-light, #ddd);
   overflow: hidden;
 }
 
@@ -19,14 +19,14 @@
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
+  background-color: var(--bg-secondary, #f8f9fa);
   overflow: hidden;
   flex-shrink: 0;
 }
 
 .selector-header {
   padding: 1rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-light, #ddd);
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -36,10 +36,11 @@
   font-size: 1.3rem;
   padding: 0;
   text-align: left;
+  color: var(--text-primary, #333);
 }
 
 .info-text {
-  color: #666;
+  color: var(--text-secondary, #666);
   font-size: 0.85rem;
   margin: 0.25rem 0 0 0;
   text-align: left;
@@ -47,7 +48,7 @@
 
 .search-box {
   padding: 1rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-light, #ddd);
   flex-shrink: 0;
 }
 
@@ -226,6 +227,13 @@
   font-style: italic;
 }
 
+.cart-semester-header {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
 .course-item {
   border: 2px solid #ddd;
   border-radius: 8px;
@@ -402,4 +410,163 @@
     width: 100%;
     justify-content: space-between;
   }
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .search-input {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .search-input:focus {
+  border-color: #66bb6a;
+}
+
+[data-theme="dark"] .course-item {
+  background-color: var(--bg-secondary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .course-item:hover {
+  background-color: #353535;
+  border-color: #666666;
+}
+
+[data-theme="dark"] .course-item.selected {
+  border-color: #66bb6a;
+  background-color: rgba(76, 175, 80, 0.2);
+}
+
+[data-theme="dark"] .course-header:hover {
+  background-color: #353535;
+}
+
+[data-theme="dark"] .course-details {
+  background-color: #2a2a2a;
+  border-top-color: #555555;
+}
+
+[data-theme="dark"] .section-selector h4 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .section-count {
+  background-color: #404040;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .course-meta {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .course-code {
+  color: #90caf9;
+}
+
+[data-theme="dark"] .course-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .course-term {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .section-btn {
+  background-color: var(--bg-tertiary);
+  border-color: #555555;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .section-btn:hover {
+  border-color: #66bb6a;
+  background-color: #404040;
+}
+
+[data-theme="dark"] .section-btn.active {
+  border-color: #66bb6a;
+  background-color: #66bb6a;
+  color: white;
+}
+
+[data-theme="dark"] .section-group-header {
+  color: #64b5f6;
+  border-bottom-color: #555555;
+}
+
+[data-theme="dark"] .term-info {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .sections-dropdown {
+  background-color: #2a2a2a;
+  border-color: #555555;
+}
+
+[data-theme="dark"] .section-item {
+  border-color: #444444;
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .section-item:hover {
+  background-color: #353535;
+}
+
+[data-theme="dark"] .section-item.selected {
+  background-color: rgba(76, 175, 80, 0.2);
+}
+
+[data-theme="dark"] .cart-item {
+  background-color: var(--bg-tertiary);
+  border-color: #555555;
+  border-width: 1px;
+  border-style: solid;
+}
+
+[data-theme="dark"] .cart-blockout-item {
+  background-color: rgba(124, 58, 237, 0.15);
+  border-color: #7c3aed;
+}
+
+[data-theme="dark"] .cart-header,
+[data-theme="dark"] .selector-header {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .cart-course-code {
+  color: #90caf9;
+}
+
+[data-theme="dark"] .cart-course-title,
+[data-theme="dark"] .cart-course-term {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .cart-section-name {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .cart-section-instructor {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .cart-count {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .cart-empty {
+  color: var(--text-tertiary);
+}
+
+[data-theme="dark"] .cart-semester-header {
+  color: #90caf9;
+}
+
+[data-theme="dark"] .cart-delete-btn {
+  color: #ff6b6b;
+  background-color: transparent;
+}
+
+[data-theme="dark"] .cart-delete-btn:hover {
+  background-color: rgba(255, 107, 107, 0.1);
 }

@@ -18,6 +18,39 @@
   color: #333;
 }
 
+.semester-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.semester-btn {
+  padding: 0.5rem 1rem;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.semester-btn:hover:not(:disabled) {
+  background-color: #bbdefb;
+}
+
+.semester-btn.active {
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+}
+
+.semester-btn:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
 .week-navigation {
   display: flex;
   align-items: center;
@@ -63,6 +96,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 1rem;
+  background-color: inherit;
 }
 
 .timetable-grid {
@@ -172,11 +206,16 @@
 .blockout-block {
   background-color: #e9d5ff;
   border-color: #7c3aed;
+  border-width: 2px;
   opacity: 0.8;
   z-index: 0;
 }
 
-.blockout-block .session-code,
+.blockout-block .session-code {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
 .blockout-block .session-time {
   color: #7c3aed;
 }
@@ -204,4 +243,166 @@
 .session-venue {
   font-size: 0.7rem;
   color: #666;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .weekly-timetable {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .timetable-container {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .timetable-content {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .timetable-header {
+  background-color: var(--bg-secondary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .timetable-header h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .week-info {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .date-range {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .nav-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+[data-theme="dark"] .nav-button:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+[data-theme="dark"] .nav-button:disabled {
+  background-color: #2a2a2a;
+  color: #666666;
+}
+
+[data-theme="dark"] .week-selector button {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .week-selector button:hover:not(:disabled) {
+  background-color: #404040;
+}
+
+[data-theme="dark"] .week-selector button.active {
+  background-color: #1976d2;
+  border-color: #1976d2;
+}
+
+[data-theme="dark"] .week-selector button:disabled {
+  background-color: #2a2a2a;
+  color: #666666;
+  border-color: #444444;
+}
+
+[data-theme="dark"] .semester-filter {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .semester-filter button {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .semester-filter button:hover:not(.active) {
+  background-color: #404040;
+}
+
+[data-theme="dark"] .semester-filter button.active {
+  background-color: #1976d2;
+  border-color: #1976d2;
+}
+
+[data-theme="dark"] .semester-btn {
+  background-color: rgba(25, 118, 210, 0.2);
+  color: #64b5f6;
+  border-color: #1976d2;
+}
+
+[data-theme="dark"] .semester-btn:hover:not(:disabled) {
+  background-color: rgba(25, 118, 210, 0.3);
+}
+
+[data-theme="dark"] .semester-btn.active {
+  background-color: #1976d2;
+  color: white;
+}
+
+[data-theme="dark"] .semester-btn:disabled {
+  background-color: #2a2a2a;
+  border-color: #444444;
+  color: #666666;
+}
+
+[data-theme="dark"] .timetable-grid {
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .time-column {
+  background-color: var(--bg-secondary);
+  border-color: #444444;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .time-slot {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .day-column {
+  border-color: #444444;
+  background-color: var(--bg-primary);
+}
+
+[data-theme="dark"] .day-header {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: #444444;
+}
+
+[data-theme="dark"] .session-block {
+  background-color: #1e3a5f;
+  border-color: #2563eb;
+}
+
+[data-theme="dark"] .session-code {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .session-section,
+[data-theme="dark"] .session-time,
+[data-theme="dark"] .session-venue {
+  color: #b0c4de;
+}
+
+[data-theme="dark"] .session-block.blockout-block {
+  background-color: #4c1d95;
+  border-color: #6b21a8;
+  border-width: 2px;
+  opacity: 1;
+}
+
+[data-theme="dark"] .session-block.blockout-block .session-code {
+  color: #e9d5ff;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .session-block.blockout-block .session-time {
+  color: #e9d5ff;
+  font-weight: 600;
 }

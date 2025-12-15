@@ -1,0 +1,40 @@
+.theme-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem;
+  border-radius: 6px;
+}
+
+.theme-option {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-option:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.theme-option.active {
+  background: rgba(0, 123, 255, 0.15);
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .theme-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .theme-option.active {
+  background: rgba(0, 123, 255, 0.25);
+}

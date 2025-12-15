@@ -150,14 +150,7 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) 
                   disabled={isDisabled}
                   style={{
                     padding: '0.5rem 1rem',
-                    marginLeft: index > 0 ? '0.5rem' : '0',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    backgroundColor: isDisabled ? '#f0f0f0' : (selectedSemester === semester ? '#2196F3' : 'white'),
-                    color: isDisabled ? '#999' : (selectedSemester === semester ? 'white' : '#333'),
-                    cursor: isDisabled ? 'not-allowed' : 'pointer',
-                    fontWeight: selectedSemester === semester ? 'bold' : 'normal',
-                    opacity: isDisabled ? 0.6 : 1
+                    marginLeft: index > 0 ? '0.5rem' : '0'
                   }}
                 >
                   {semester.replace(/^\d{4}-\d{2}\s*/, '')}
@@ -226,13 +219,11 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) 
                         style={{
                           top: `${top}px`,
                           height: `${height}px`,
-                          backgroundColor: '#e9d5ff',
-                          borderColor: '#7c3aed',
                           zIndex: 0
                         }}
                       >
-                        <div className="session-code" style={{ color: '#7c3aed' }}>{blockout.name}</div>
-                        <div className="session-time" style={{ color: '#7c3aed' }}>
+                        <div className="session-code">{blockout.name}</div>
+                        <div className="session-time">
                           {blockout.startTime} - {blockout.endTime}
                         </div>
                       </div>

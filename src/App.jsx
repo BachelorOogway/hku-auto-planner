@@ -6,6 +6,7 @@ import LoadingSpinner from './components/LoadingSpinner'
 import SolutionsList from './components/SolutionsList'
 import WeeklyTimetable from './components/WeeklyTimetable'
 import BlockoutModal from './components/BlockoutModal'
+import ThemeToggle from './components/ThemeToggle'
 import { processCoursesData, generateSchedules } from './utils/courseParser'
 
 function App() {
@@ -188,14 +189,17 @@ function App() {
       <header className="App-header">
         <div className="header-content">
           <h1>HKU Course Planner</h1>
-          <a 
-            href="https://github.com/ShingZhanho/hku-auto-planner#readme" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="readme-link"
-          >
-            📖 How to Use
-          </a>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <ThemeToggle />
+            <a 
+              href="https://github.com/ShingZhanho/hku-auto-planner#readme" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="readme-link"
+            >
+              📖 How to Use
+            </a>
+          </div>
         </div>
       </header>
 

@@ -323,7 +323,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                   <div className="cart-sections">
                     {Object.entries(sectionsByTerm).map(([term, sections]) => (
                       <div key={term}>
-                        <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+                        <div className="cart-semester-header">
                           {term}
                         </div>
                         {sections.map(section => {

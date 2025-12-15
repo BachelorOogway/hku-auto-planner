@@ -39,3 +39,18 @@
   color: #333;
   font-size: 1rem;
 }
+
+/* Dark mode overrides */
+[data-theme="dark"] .loading-content {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .loading-content p {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .spinner {
+  border-color: var(--bg-tertiary);
+  border-top-color: #2196f3;
+}

@@ -155,3 +155,93 @@
   color: #666;
   font-weight: normal;
 }
+
+/* Dark mode overrides */
+[data-theme="dark"] .solutions-list {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .solutions-header {
+  background-color: var(--bg-secondary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .solutions-header h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .solution-card {
+  background-color: var(--bg-tertiary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .solution-card:hover {
+  border-color: #42a5f5;
+  box-shadow: 0 2px 4px rgba(66, 165, 245, 0.2);
+}
+
+[data-theme="dark"] .solution-card.selected {
+  background-color: rgba(33, 150, 243, 0.25);
+  border-color: #42a5f5;
+  box-shadow: 0 2px 8px rgba(66, 165, 245, 0.3);
+}
+
+[data-theme="dark"] .solution-card.disabled {
+  background-color: #2a2a2a;
+  border-color: #444444;
+}
+
+[data-theme="dark"] .solution-card h3 {
+  color: #64b5f6;
+}
+
+[data-theme="dark"] .semester-courses h4 {
+  color: #64b5f6;
+}
+
+[data-theme="dark"] .semester-courses li {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .semester-section-title {
+  background-color: rgba(33, 150, 243, 0.2);
+  color: #64b5f6;
+  border-color: #42a5f5;
+}
+
+[data-theme="dark"] .plan-item {
+  background-color: var(--bg-tertiary);
+  border-color: #555555;
+  border-width: 1px;
+}
+
+[data-theme="dark"] .plan-item:hover {
+  background-color: #404040;
+}
+
+[data-theme="dark"] .plan-item.selected {
+  background-color: rgba(33, 150, 243, 0.25);
+  border-color: #42a5f5;
+}
+
+[data-theme="dark"] .plan-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .plan-course-count {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .semester-column-title {
+  background-color: rgba(33, 150, 243, 0.2);
+  color: #64b5f6;
+  border-color: #42a5f5;
+}
+
+[data-theme="dark"] .plan-course-code {
+  color: #64b5f6;
+}
+
+[data-theme="dark"] .plan-course-section {
+  color: var(--text-secondary);
+}

@@ -132,3 +132,43 @@
 .blockout-btn-add:active {
   background-color: #5b21b6;
 }
+
+/* Dark mode overrides */
+[data-theme="dark"] .blockout-modal {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .blockout-modal-header h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .blockout-modal-close {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .blockout-form-group input,
+[data-theme="dark"] .blockout-form-group select {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .blockout-form-group input:focus,
+[data-theme="dark"] .blockout-form-group select:focus {
+  border-color: #7c3aed;
+}
+
+[data-theme="dark"] .blockout-form-group label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .blockout-btn-cancel {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid #555555;
+}
+
+[data-theme="dark"] .blockout-btn-cancel:hover {
+  background-color: #404040;
+}
