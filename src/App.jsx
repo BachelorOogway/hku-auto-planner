@@ -6,6 +6,7 @@ import LoadingSpinner from './components/LoadingSpinner'
 import SolutionsList from './components/SolutionsList'
 import WeeklyTimetable from './components/WeeklyTimetable'
 import BlockoutModal from './components/BlockoutModal'
+import CalendarExportModal from './components/CalendarExportModal'
 import ThemeToggle from './components/ThemeToggle'
 import { processCoursesData, generateSchedules } from './utils/courseParser'
 import { hashCourseData, saveShoppingCart, loadShoppingCart, clearShoppingCart } from './utils/storageUtils'
@@ -21,6 +22,7 @@ function App() {
   const [errorMessage, setErrorMessage] = useState('');
   const [blockouts, setBlockouts] = useState([]);
   const [isBlockoutModalOpen, setIsBlockoutModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [dataHash, setDataHash] = useState(null);
 
@@ -297,6 +299,9 @@ function App() {
           <button className="back-button" onClick={handleBackToSearch}>
             ← Back to Search
           </button>
+          <button className="export-calendar-btn" onClick={() => setIsExportModalOpen(true)}>
+            Export Calendar
+          </button>
           {(() => {
             if (selectedPlanIndex === null) return null;
             
@@ -354,6 +359,14 @@ function App() {
         onClose={() => setIsBlockoutModalOpen(false)}
         onAdd={handleAddBlockout}
         availableTerms={solutions?.availableTerms || []}
+      />
+
+      <CalendarExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        schedule={selectedPlanIndex !== null && solutions ? solutions.plans[selectedPlanIndex].courses : []}
+        availableSemesters={solutions?.availableTerms || []}
+        blockouts={blockouts}
       />
         </>
       )}

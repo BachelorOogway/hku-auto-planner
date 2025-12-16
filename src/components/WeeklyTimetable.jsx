@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { getScheduleDateRange, getWeekNumbers, isSessionInWeek, timeToMinutes, formatTime } from '../utils/courseParser';
 import './WeeklyTimetable.css';
 
-function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) {
+function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [], onExportClick }) {
   // Count courses per semester
   const semesterCounts = useMemo(() => {
     const counts = {};
@@ -132,27 +132,27 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) 
           <h2 style={{ margin: 0 }}>Weekly Timetable</h2>
           <div className="semester-selector">
             {availableSemesters.map((semester, index) => {
-              const isDisabled = semesterCounts[semester] === 0;
-              return (
-                <button
-                  key={semester}
-                  className={`semester-btn ${selectedSemester === semester ? 'active' : ''}`}
-                  onClick={() => {
-                    if (!isDisabled) {
-                      setSelectedSemester(semester);
-                      setCurrentWeekIndex(0);
-                    }
-                  }}
-                  disabled={isDisabled}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    marginLeft: index > 0 ? '0.5rem' : '0'
-                  }}
-                >
-                  {semester.replace(/^\d{4}-\d{2}\s*/, '')}
-                </button>
-              );
-            })}
+                const isDisabled = semesterCounts[semester] === 0;
+                return (
+                  <button
+                    key={semester}
+                    className={`semester-btn ${selectedSemester === semester ? 'active' : ''}`}
+                    onClick={() => {
+                      if (!isDisabled) {
+                        setSelectedSemester(semester);
+                        setCurrentWeekIndex(0);
+                      }
+                    }}
+                    disabled={isDisabled}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      marginLeft: index > 0 ? '0.5rem' : '0'
+                    }}
+                  >
+                    {semester.replace(/^\d{4}-\d{2}\s*/, '')}
+                  </button>
+                );
+              })}
           </div>
         </div>
         
