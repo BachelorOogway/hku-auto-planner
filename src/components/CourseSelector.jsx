@@ -157,9 +157,6 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
           <p className="info-text">
             {coursesData.totalCourses} courses available · {selectedCourses.length}/{MAX_COURSES} selected
           </p>
-        </div>
-
-        <div className="search-box">
           <input
             type="text"
             placeholder="Search by course code (e.g., COMP1234, ECON)..."

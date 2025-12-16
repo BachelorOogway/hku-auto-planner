@@ -3,13 +3,20 @@
   flex-direction: column;
   height: 100%;
   background-color: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .timetable-header {
   padding: 1rem;
   border-bottom: 2px solid #dee2e6;
-  background-color: #f8f9fa;
-  flex-shrink: 0;
+  background-color: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .timetable-header h2 {
@@ -92,9 +99,6 @@
 }
 
 .timetable-content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding: 1rem;
   background-color: inherit;
 }
@@ -259,7 +263,9 @@
 }
 
 [data-theme="dark"] .timetable-header {
-  background-color: var(--bg-secondary);
+  background-color: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   border-color: #555555;
 }
 

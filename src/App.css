@@ -71,8 +71,12 @@
   text-align: left;
   padding: 0.75rem 1rem;
   border-bottom: 2px solid var(--border-color);
-  background-color: var(--bg-secondary);
+  background-color: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   flex-shrink: 0;
+  position: relative;
+  z-index: 100;
 }
 
 .header-content {
@@ -117,12 +121,16 @@
 .App-footer {
   border-top: 2px solid var(--border-light);
   padding: 1rem 2rem;
-  background-color: var(--bg-secondary);
+  background-color: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   flex-shrink: 0;
+  position: relative;
+  z-index: 100;
 }
 
 .footer-warning {
@@ -358,6 +366,13 @@ input[type="file"] {
 [data-theme="dark"] .error-message {
   background-color: #4a1a1a;
   color: #ffb3b3;
+}
+
+[data-theme="dark"] .App-header,
+[data-theme="dark"] .App-footer {
+  background-color: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
 }
 
 [data-theme="dark"] .default-button:disabled {
