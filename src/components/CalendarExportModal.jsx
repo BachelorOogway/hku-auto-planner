@@ -16,15 +16,21 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
     acc[sem] = true;
     return acc;
   }, {}));
-  const [includeBlockouts, setIncludeBlockouts] = useState(true);
+  const [includeBlockouts, setIncludeBlockouts] = useState(false);
   const [includeLocation, setIncludeLocation] = useState(true);
   const [roundToHalfHour, setRoundToHalfHour] = useState(false);
   const [eventName, setEventName] = useState('%COURSE_CODE%');
-  const [eventDescription, setEventDescription] = useState('%COURSE_NAME%\nInstructor: %INSTRUCTOR%\nRoom: %LOCATION%');
+  const [eventDescription, setEventDescription] = useState('Title: %COURSE_NAME%\nInstructor: %INSTRUCTOR%');
   const [nameCaretPos, setNameCaretPos] = useState(0);
   const [descCaretPos, setDescCaretPos] = useState(0);
 
   if (!isOpen) return null;
+
+  // Calculate which semesters have courses
+  const semesterCounts = availableSemesters.reduce((acc, sem) => {
+    acc[sem] = schedule.filter(course => course.term === sem).length;
+    return acc;
+  }, {});
 
   const replacePlaceholders = (template, session, course) => {
     return template
@@ -144,8 +150,6 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
   };
 
   const formatICSDate = (date, timeMinutes) => {
-    console.log('formatICSDate called with:', { date, timeMinutes, dateType: typeof date, isDate: date instanceof Date });
-    
     let d;
     if (date instanceof Date) {
       d = new Date(date.getTime());
@@ -153,22 +157,19 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
       d = parseDate(date);
     }
     
-    console.log('Date after parsing:', d, 'isValid:', !isNaN(d.getTime()));
-    
     if (isNaN(d.getTime())) {
       console.error('Invalid date encountered:', { date, type: typeof date, timeMinutes });
       throw new RangeError(`Invalid date: ${date}`);
     }
     
-    console.log('Setting time:', Math.floor(timeMinutes / 60), 'hours,', timeMinutes % 60, 'minutes');
     d.setHours(Math.floor(timeMinutes / 60), timeMinutes % 60, 0, 0);
     
-    console.log('Date after setHours:', d, 'isValid:', !isNaN(d.getTime()));
+    if (isNaN(d.getTime())) {
+      console.error('Invalid date after setHours:', { date, timeMinutes });
+      throw new RangeError(`Invalid date after setting time`);
+    }
     
-    const isoString = d.toISOString();
-    console.log('ISO string:', isoString);
-    
-    return isoString.replace(/[-:]/g, '').split('.')[0] + 'Z';
+    return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   };
 
   const generateICS = () => {
@@ -246,8 +247,8 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
         
         if (!applies) return;
 
-        const startTime = roundTime(blockout.startTime);
-        const endTime = roundTime(blockout.endTime);
+        const startTime = roundTime(timeToMinutes(blockout.startTime));
+        const endTime = roundTime(timeToMinutes(blockout.endTime));
 
         // Use first selected semester's schedule for date range
         const firstSem = availableSemesters.find(sem => selectedSemesters[sem]);
@@ -271,8 +272,7 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
           lines.push(`DTSTART:${formatICSDate(firstOccurrence, startTime)}`);
           lines.push(`DTEND:${formatICSDate(firstOccurrence, endTime)}`);
           lines.push(`RRULE:FREQ=WEEKLY;UNTIL=${formatICSDate(endDate, endTime)}`);
-          lines.push(`SUMMARY:Blocked Time`);
-          lines.push(`DESCRIPTION:Personal blockout time`);
+          lines.push(`SUMMARY:${blockout.name || 'Blockout'}`);
           lines.push('END:VEVENT');
         }
       });
@@ -305,39 +305,45 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
           {/* Semester Selection */}
           <div className="export-section">
             <h3>Select Semesters</h3>
-            <div className="semester-checkboxes">
-              {availableSemesters.map(semester => (
-                <label key={semester} className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={selectedSemesters[semester] || false}
-                    onChange={() => handleSemesterToggle(semester)}
-                  />
-                  <span>{semester}</span>
-                </label>
-              ))}
+            <div className="semester-checkboxes semester-grid">
+              {availableSemesters.map(semester => {
+                const hasCourses = semesterCounts[semester] > 0;
+                return (
+                  <label key={semester} className={`checkbox-label ${!hasCourses ? 'disabled' : ''}`}>
+                    <input
+                      type="checkbox"
+                      checked={selectedSemesters[semester] || false}
+                      onChange={() => handleSemesterToggle(semester)}
+                      disabled={!hasCourses}
+                    />
+                    <span>{semester} {!hasCourses ? '(empty)' : ''}</span>
+                  </label>
+                );
+              })}
             </div>
           </div>
 
           {/* Options */}
           <div className="export-section">
             <h3>Export Options</h3>
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={includeBlockouts}
-                onChange={(e) => setIncludeBlockouts(e.target.checked)}
-              />
-              <span>Include blockout times</span>
-            </label>
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={includeLocation}
-                onChange={(e) => setIncludeLocation(e.target.checked)}
-              />
-              <span>Include locations</span>
-            </label>
+            <div className="options-grid">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={includeBlockouts}
+                  onChange={(e) => setIncludeBlockouts(e.target.checked)}
+                />
+                <span>Include blockout times</span>
+              </label>
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={includeLocation}
+                  onChange={(e) => setIncludeLocation(e.target.checked)}
+                />
+                <span>Include locations</span>
+              </label>
+            </div>
             <label className="checkbox-label">
               <input
                 type="checkbox"

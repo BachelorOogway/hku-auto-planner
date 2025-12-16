@@ -193,8 +193,14 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [], on
           {timetableData.days.map((day, dayIndex) => {
             const totalHeight = timetableData.hours.length * 60; // 60px per hour slot
             
-            // Filter blockouts for this day
-            const dayBlockouts = blockouts.filter(b => b.day === day);
+            // Filter blockouts for this day and selected semester
+            const dayBlockouts = blockouts.filter(b => {
+              if (b.day !== day) return false;
+              // Check if blockout applies to selected semester
+              if (b.applyTo === 'both') return true;
+              const semNum = selectedSemester.toLowerCase().replace(/.*sem /, 'sem');
+              return b.applyTo === semNum;
+            });
             
             return (
               <div key={day} className="day-column">

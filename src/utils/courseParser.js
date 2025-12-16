@@ -421,6 +421,7 @@ export const generateSchedules = (selectedCourses, groupedData, availableTerms =
         validCourses.push({
           courseCode: course.code,
           courseTitle: course.title,
+          offerDept: groupedData[groupKey].offerDept,
           term: targetSemester,
           sections: availableSections
         });
@@ -506,6 +507,7 @@ export const generateSchedules = (selectedCourses, groupedData, availableTerms =
             {
               courseCode: course.courseCode,
               courseTitle: course.courseTitle,
+              offerDept: course.offerDept,
               term: course.term,
               section: sectionData.section,
               sessions: sectionData.sessions
