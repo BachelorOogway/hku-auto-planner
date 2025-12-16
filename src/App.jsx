@@ -130,6 +130,22 @@ function App() {
     setErrorMessage('');
   };
 
+  const handleClearAllCourses = () => {
+    setSelectedCourses([]);
+    setErrorMessage('');
+  };
+
+  const handleClearAllBlockouts = () => {
+    setBlockouts([]);
+    setErrorMessage('');
+  };
+
+  const handleClearAll = () => {
+    setSelectedCourses([]);
+    setBlockouts([]);
+    setErrorMessage('');
+  };
+
   const handleSolve = () => {
     const MAX_COURSES = 12;
     
@@ -268,6 +284,9 @@ function App() {
               blockouts={blockouts}
               onRemoveBlockout={handleRemoveBlockout}
               onEditBlockout={handleEditBlockout}
+              onClearAll={handleClearAll}
+              onClearAllCourses={handleClearAllCourses}
+              onClearAllBlockouts={handleClearAllBlockouts}
               searchTerm={searchTerm}
               onSearchTermChange={setSearchTerm}
             />

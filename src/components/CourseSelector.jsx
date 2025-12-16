@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import './CourseSelector.css';
 
-function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourseRemove, blockouts = [], onRemoveBlockout, onEditBlockout, searchTerm = '', onSearchTermChange }) {
+function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourseRemove, blockouts = [], onRemoveBlockout, onEditBlockout, onClearAll, onClearAllCourses, onClearAllBlockouts, searchTerm = '', onSearchTermChange }) {
   const [expandedCourse, setExpandedCourse] = useState(null);
 
   const MAX_COURSES = 12;
@@ -281,19 +281,74 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
             <h2>Shopping Cart</h2>
             <p className="cart-count">{selectedCourses.length} course(s) selected</p>
           </div>
-          {selectedCourses.length > 0 && (
-            <button
-              onClick={() => {
-                if (window.confirm(`Remove all ${selectedCourses.length} courses from cart?`)) {
-                  selectedCourses.forEach(course => onCourseRemove(course.courseCode));
-                }
-              }}
-              className="cart-clear-btn"
-              title="Clear all courses"
-            >
-              Clear All
-            </button>
-          )}
+          {(selectedCourses.length > 0 || blockouts.length > 0) && (() => {
+            const hasBothTypes = selectedCourses.length > 0 && blockouts.length > 0;
+            
+            if (hasBothTypes) {
+              // Show all three buttons when both types exist
+              return (
+                <div className="cart-clear-buttons">
+                  <button
+                    onClick={() => {
+                      const totalItems = selectedCourses.length + blockouts.length;
+                      if (window.confirm(`Remove all ${totalItems} item(s) from cart?`)) {
+                        onClearAll();
+                      }
+                    }}
+                    className="cart-clear-btn"
+                    title="Clear everything"
+                  >
+                    Clear All
+                  </button>
+                  <div className="cart-clear-secondary">
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`Remove all ${selectedCourses.length} course(s)?`)) {
+                          onClearAllCourses();
+                        }
+                      }}
+                      className="cart-clear-btn-secondary"
+                      title="Clear all courses"
+                    >
+                      Clear Courses
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`Remove all ${blockouts.length} blockout(s)?`)) {
+                          onClearAllBlockouts();
+                        }
+                      }}
+                      className="cart-clear-btn-secondary"
+                      title="Clear all blockouts"
+                    >
+                      Clear Blockouts
+                    </button>
+                  </div>
+                </div>
+              );
+            } else {
+              // Show only one primary button when only one type exists
+              return (
+                <button
+                  onClick={() => {
+                    if (selectedCourses.length > 0) {
+                      if (window.confirm(`Remove all ${selectedCourses.length} course(s)?`)) {
+                        onClearAllCourses();
+                      }
+                    } else {
+                      if (window.confirm(`Remove all ${blockouts.length} blockout(s)?`)) {
+                        onClearAllBlockouts();
+                      }
+                    }
+                  }}
+                  className="cart-clear-btn"
+                  title={selectedCourses.length > 0 ? "Clear all courses" : "Clear all blockouts"}
+                >
+                  Clear All
+                </button>
+              );
+            }
+          })()}
         </div>
 
         <div className="cart-content">

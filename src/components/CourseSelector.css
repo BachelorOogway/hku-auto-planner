@@ -102,6 +102,18 @@
   margin-bottom: 0;
 }
 
+.cart-clear-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.cart-clear-secondary {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .cart-clear-btn {
   padding: 0.5rem 1rem;
   background-color: #dc3545;
@@ -121,6 +133,29 @@
 
 .cart-clear-btn:active {
   background-color: #bd2130;
+}
+
+.cart-clear-btn-secondary {
+  padding: 0.4rem 0.75rem;
+  background-color: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.cart-clear-btn-secondary:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.cart-clear-btn-secondary:active {
+  background-color: #c82333;
+  border-color: #c82333;
 }
 
 .cart-content {
@@ -249,6 +284,21 @@
 .dark-theme .cart-delete-btn:hover {
   background-color: #EF5350;
   color: #1e1e1e;
+}
+
+.dark-theme .cart-clear-btn-secondary {
+  border-color: #EF5350;
+  color: #EF5350;
+}
+
+.dark-theme .cart-clear-btn-secondary:hover {
+  background-color: #EF5350;
+  color: #1e1e1e;
+}
+
+.dark-theme .cart-clear-btn-secondary:active {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
 }
 
 .cart-sections {
