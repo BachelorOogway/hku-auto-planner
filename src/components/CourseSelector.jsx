@@ -137,7 +137,12 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                 onClick={() => handleCourseClick(course)}
               >
                 <div className="course-main-info">
-                  <span className="course-code">{course.courseCode}</span>
+                  <div className="course-code-row">
+                    <span className="course-code">{course.courseCode}</span>
+                    {course.classTime && (
+                      <span className="cc-time-badge">{course.classTime}</span>
+                    )}
+                  </div>
                   <span className="course-title">{course.courseTitle}</span>
                 </div>
                 <div className="course-meta">
@@ -308,7 +313,16 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                 <div key={course.courseCode} className="cart-item">
                   <div className="cart-item-header">
                     <div className="cart-course-info">
-                      <div className="cart-course-code">{course.courseCode}</div>
+                      <div className="cart-course-code-row">
+                        <div className="cart-course-code">{course.courseCode}</div>
+                        {course.classTime && (
+                          <div className="cc-time-badge cart-badge">
+                            {course.classTime.split('; ').map((time, idx) => (
+                              <div key={idx}>{time}</div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <div className="cart-course-term">{course.courseTitle}</div>
                     </div>
                     <button

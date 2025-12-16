@@ -204,13 +204,45 @@ export const getUniqueCourses = (groupedData) => {
   
   Object.values(groupedData).forEach(course => {
     if (!courseMap[course.courseCode]) {
+      // Check if this is a common core course
+      const isCommonCore = /^(CCST|CCHU|CCGL|CCAI|CCCH)/.test(course.courseCode);
+      
+      // Get class time for common core courses
+      let classTime = null;
+      if (isCommonCore) {
+        // Get the first section's sessions to extract time
+        const firstSection = Object.values(course.sections)[0];
+        if (firstSection && firstSection.length > 0) {
+          const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+          const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+          
+          const timeParts = [];
+          days.forEach((day, idx) => {
+            const session = firstSection.find(s => s.days[day]);
+            if (session && session.days[day]) {
+              const startMinutes = timeToMinutes(session.startTime);
+              const endMinutes = timeToMinutes(session.endTime);
+              
+              if (startMinutes !== null && endMinutes !== null) {
+                const startTime = minutesToTime(startMinutes);
+                const endTime = minutesToTime(endMinutes);
+                timeParts.push(`${dayLabels[idx]} ${startTime}-${endTime}`);
+              }
+            }
+          });
+          
+          classTime = timeParts.join('; ');
+        }
+      }
+      
       courseMap[course.courseCode] = {
         courseCode: course.courseCode,
         courseTitle: course.courseTitle,
         offerDept: course.offerDept,
         terms: [],
         sections: Object.keys(course.sections),
-        sectionCount: Object.keys(course.sections).length
+        sectionCount: Object.keys(course.sections).length,
+        classTime: classTime
       };
     }
     
