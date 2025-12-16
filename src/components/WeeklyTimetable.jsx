@@ -31,9 +31,6 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) 
     }
   }, [schedule, selectedSemester, availableSemesters, semesterCounts]);
 
-  console.log('WeeklyTimetable received schedule:', schedule);
-  console.log('Semester counts:', semesterCounts);
-
   // Filter schedule by selected semester
   const semesterSchedule = useMemo(() => {
     return schedule.filter(course => course.term === selectedSemester);
@@ -65,7 +62,6 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) 
         }
       });
     });
-    console.log('Week sessions for week', currentWeek?.weekNumber, ':', sessions);
     return sessions;
   }, [semesterSchedule, currentWeek]);
 

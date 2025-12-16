@@ -278,37 +278,16 @@ function App() {
               }
             }
             
-            // Check for overlapping courses between semesters
-            const term1 = solutions.availableTerms[0];
-            const term2 = solutions.availableTerms[1] || term1;
-            const sem1Courses = new Set(selectedPlan.courses.filter(c => c.term === term1).map(c => c.courseCode));
-            const sem2Courses = new Set(selectedPlan.courses.filter(c => c.term === term2).map(c => c.courseCode));
-            const overlaps = [];
-            
-            for (const course of sem1Courses) {
-              if (sem2Courses.has(course)) {
-                overlaps.push(course);
-              }
-            }
-            
-            // Display warnings
-            const warnings = [];
+            // Display warning only for missing courses
             if (missingCourses.length > 0) {
-              warnings.push(
-                <div key="missing" className="footer-warning">
+              return (
+                <div className="footer-warning">
                   ⚠️ Warning: The following courses are missing from your plan: <strong>{missingCourses.join(', ')}</strong>
                 </div>
               );
             }
-            if (overlaps.length > 0) {
-              warnings.push(
-                <div key="overlap" className="footer-warning">
-                  ⚠️ Warning: The following courses are taken in both semesters: <strong>{overlaps.join(', ')}</strong>
-                </div>
-              );
-            }
             
-            return warnings.length > 0 ? <>{warnings}</> : null;
+            return null;
           })()}
         </footer>
       )}
