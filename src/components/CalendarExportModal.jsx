@@ -23,7 +23,7 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
   const [includeLocation, setIncludeLocation] = useState(true);
   const [roundToHalfHour, setRoundToHalfHour] = useState(false);
   const [eventName, setEventName] = useState('%COURSE_CODE%');
-  const [eventDescription, setEventDescription] = useState('Title: %COURSE_NAME%\nInstructor: %INSTRUCTOR%');
+  const [eventDescription, setEventDescription] = useState('Course Name: %COURSE_NAME%\nInstructor: %INSTRUCTOR%');
   const [nameCaretPos, setNameCaretPos] = useState(0);
   const [descCaretPos, setDescCaretPos] = useState(0);
 
@@ -362,7 +362,7 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
                   checked={includeLocation}
                   onChange={(e) => setIncludeLocation(e.target.checked)}
                 />
-                <span>Include locations</span>
+                <span>Include venue</span>
               </label>
             </div>
             <label className="checkbox-label">
@@ -371,7 +371,7 @@ function CalendarExportModal({ isOpen, onClose, schedule, availableSemesters, bl
                 checked={roundToHalfHour}
                 onChange={(e) => setRoundToHalfHour(e.target.checked)}
               />
-              <span>Round times to nearest 30 minutes</span>
+              <span>Round time to the nearest 30 minutes (e.g., 9:20 → 9:30)</span>
             </label>
           </div>
 
