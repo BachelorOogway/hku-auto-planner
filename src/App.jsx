@@ -317,7 +317,7 @@ function App() {
         <>
       <header className="App-header">
         <div className="header-content">
-          <h1>HKU Course Planner</h1>
+          <h1>HKU Course Planner <span className="beta-badge">BETA</span></h1>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <ThemeToggle />
             <a 
