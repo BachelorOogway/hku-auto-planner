@@ -8,6 +8,7 @@ import WeeklyTimetable from './components/WeeklyTimetable'
 import BlockoutModal from './components/BlockoutModal'
 import ThemeToggle from './components/ThemeToggle'
 import { processCoursesData, generateSchedules } from './utils/courseParser'
+import { hashCourseData, saveShoppingCart, loadShoppingCart, clearShoppingCart } from './utils/storageUtils'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -21,6 +22,7 @@ function App() {
   const [blockouts, setBlockouts] = useState([]);
   const [isBlockoutModalOpen, setIsBlockoutModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [dataHash, setDataHash] = useState(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -34,6 +36,13 @@ function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Save shopping cart to cookies whenever it changes
+  useEffect(() => {
+    if (dataHash && processedData) {
+      saveShoppingCart(dataHash, selectedCourses, blockouts);
+    }
+  }, [selectedCourses, blockouts, dataHash, processedData]);
+
   const handleDataLoaded = (data) => {
     setCourseData(data);
     
@@ -41,9 +50,31 @@ function App() {
       console.log('Raw data sample:', data.json.slice(0, 3));
     }
     
+    // Calculate hash of the data
+    const hash = hashCourseData(data.json);
+    setDataHash(hash);
+    
+    if (import.meta.env.DEV) {
+      console.log('Data hash:', hash);
+    }
+    
     // Process the data
     const processed = processCoursesData(data.json);
     setProcessedData(processed);
+    
+    // Try to restore shopping cart from cookies
+    const savedCart = loadShoppingCart(hash);
+    if (savedCart) {
+      setSelectedCourses(savedCart.selectedCourses);
+      setBlockouts(savedCart.blockouts);
+      
+      if (import.meta.env.DEV) {
+        console.log('Restored shopping cart:', {
+          courses: savedCart.selectedCourses.length,
+          blockouts: savedCart.blockouts.length
+        });
+      }
+    }
     
     if (import.meta.env.DEV) {
       console.log('Course data loaded and processed');
