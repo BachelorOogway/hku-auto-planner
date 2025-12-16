@@ -20,6 +20,7 @@ function App() {
   const [errorMessage, setErrorMessage] = useState('');
   const [blockouts, setBlockouts] = useState([]);
   const [isBlockoutModalOpen, setIsBlockoutModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const checkMobile = () => {
@@ -215,6 +216,8 @@ function App() {
               onCourseRemove={handleCourseRemove}
               blockouts={blockouts}
               onRemoveBlockout={handleRemoveBlockout}
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
             />
             {errorMessage && (
               <div className="error-message">

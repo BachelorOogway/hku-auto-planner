@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react';
 import './CourseSelector.css';
 
-function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourseRemove, blockouts = [], onRemoveBlockout }) {
-  const [searchTerm, setSearchTerm] = useState('');
+function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourseRemove, blockouts = [], onRemoveBlockout, searchTerm = '', onSearchTermChange }) {
   const [expandedCourse, setExpandedCourse] = useState(null);
 
   const MAX_COURSES = 12;
@@ -118,7 +117,7 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
             type="text"
             placeholder="Search by course code (e.g., COMP1234, ECON)..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => onSearchTermChange(e.target.value)}
             className="search-input"
           />
         </div>
