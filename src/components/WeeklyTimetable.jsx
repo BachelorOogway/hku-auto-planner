@@ -71,8 +71,8 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [], on
     const dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     
     // Calculate dynamic time range based on actual sessions and blockouts
-    let minTime = 8 * 60; // Default to 08:00
-    let maxTime = 19 * 60; // Default to 19:00
+    let minTime = 23 * 60 + 59; // Default to 23:59 -- for finding earliest time
+    let maxTime = 0;            // Default to 00:00 -- for finding latest time
     
     // Check all sessions for earliest and latest times
     weekSessions.forEach(session => {
@@ -90,9 +90,13 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [], on
       if (end > maxTime) maxTime = end;
     });
     
-    // Round to nearest hour and add padding
-    minTime = Math.floor(minTime / 60) * 60;
-    maxTime = Math.ceil(maxTime / 60) * 60;
+    // Round to nearest hour and add 1 hour padding
+    minTime = Math.floor(minTime / 60) * 60 - 60;
+    maxTime = Math.ceil(maxTime / 60) * 60 + 60;
+
+    // Ensure bounds are within 0 to 24 hours
+    if (minTime < 0) minTime = 0;
+    if (maxTime > 24 * 60) maxTime = 24 * 60;
     
     const hours = [];
     for (let h = minTime; h < maxTime; h += 60) {
