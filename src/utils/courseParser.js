@@ -712,7 +712,11 @@ export const getWeekNumbers = (minDate, maxDate) => {
   
   const weeks = [];
   const current = new Date(minDate);
-  current.setDate(current.getDate() - current.getDay()); // Start from Sunday
+  
+  // Start from Monday (getDay() returns 0 for Sunday, 1 for Monday, etc.)
+  const dayOfWeek = current.getDay();
+  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // If Sunday, go back 6 days; otherwise go to previous/current Monday
+  current.setDate(current.getDate() + daysToMonday);
   
   let weekNum = 1;
   while (current <= maxDate) {
