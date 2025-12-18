@@ -84,7 +84,7 @@ function SolutionsList({ plans, selectedIndex, onSelectPlan }) {
               <ul>
                 {sem1Courses.map((course, idx) => (
                   <li key={idx}>
-                    <strong>{course.courseCode}{!hasValidSessions(course) ? ' *' : ''}</strong> - {course.section}
+                    <strong>{course.courseCode}<sup>{!hasValidSessions(course) ? '#' : ''}</sup></strong> - {course.section}
                   </li>
                 ))}
               </ul>
@@ -96,7 +96,7 @@ function SolutionsList({ plans, selectedIndex, onSelectPlan }) {
               <ul>
                 {sem2Courses.map((course, idx) => (
                   <li key={idx}>
-                    <strong>{course.courseCode}{!hasValidSessions(course) ? ' *' : ''}</strong> - {course.section}
+                    <strong>{course.courseCode}<sup>{!hasValidSessions(course) ? '#' : ''}</sup></strong> - {course.section}
                   </li>
                 ))}
               </ul>
@@ -104,7 +104,7 @@ function SolutionsList({ plans, selectedIndex, onSelectPlan }) {
           )}
         </div>
         {(sem1Courses.some(c => !hasValidSessions(c)) || sem2Courses.some(c => !hasValidSessions(c))) && (
-          <p className="no-lectures-note">* No scheduled lectures</p>
+          <p className="no-lectures-note"># No scheduled lectures</p>
         )}
       </div>
     );
