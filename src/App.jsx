@@ -331,7 +331,15 @@ function App() {
               rel="noopener noreferrer"
               className="readme-link"
             >
-              📖 How to Use
+              How to Use
+            </a>
+            <a
+              href="https://github.com/ShingZhanho/hku-auto-planner"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="readme-link"
+            >
+              GitHub Repo
             </a>
           </div>
         </div>

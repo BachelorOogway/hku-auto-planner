@@ -39,21 +39,21 @@ function ThemeToggle() {
         onClick={() => handleThemeChange('light')}
         title="Light mode"
       >
-        ☀️
+        Light
       </button>
       <button
         className={`theme-option ${theme === 'system' ? 'active' : ''}`}
         onClick={() => handleThemeChange('system')}
         title="System theme"
       >
-        💻
+        System
       </button>
       <button
         className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
         onClick={() => handleThemeChange('dark')}
         title="Dark mode"
       >
-        🌙
+        Dark
       </button>
     </div>
   );
