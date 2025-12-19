@@ -1,0 +1,530 @@
+.mobile-calendar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-primary);
+}
+
+.mobile-calendar-header {
+  padding: 1rem;
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-bottom: 2px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.mobile-calendar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mobile-calendar-top h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.mobile-export-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mobile-export-btn:hover {
+  background: #218838;
+}
+
+.mobile-semester-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-semester-btn {
+  flex: 1;
+  padding: 0.6rem;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobile-semester-btn:hover {
+  background: var(--hover-bg);
+}
+
+.mobile-semester-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.mobile-week-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mobile-nav-button {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.mobile-nav-button:hover:not(:disabled) {
+  background: var(--hover-bg);
+  border-color: #007bff;
+}
+
+.mobile-nav-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mobile-week-info {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.mobile-date-range {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.mobile-timetable-container {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+.mobile-timetable-grid {
+  min-width: max-content;
+}
+
+.mobile-day-headers {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  background: var(--bg-primary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.mobile-day-header-spacer {
+  width: 60px;
+  flex-shrink: 0;
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-right: 1px solid var(--border-light);
+}
+
+.mobile-day-header {
+  width: calc((100vw - 60px) / 1.6);
+  flex-shrink: 0;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-right: 1px solid var(--border-light);
+}
+
+.mobile-grid-content {
+  display: flex;
+}
+
+.mobile-time-column {
+  width: 60px;
+  flex-shrink: 0;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-right: 1px solid var(--border-light);
+}
+
+.mobile-time-slot {
+  height: 60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mobile-day-column {
+  width: calc((100vw - 60px) / 1.6);
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-light);
+  position: relative;
+}
+
+.mobile-day-slots {
+  position: relative;
+}
+
+.mobile-session-block {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 4px;
+  padding: 0.35rem;
+  font-size: 0.7rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.mobile-blockout-block {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(220, 53, 69, 0.3),
+    rgba(220, 53, 69, 0.3) 10px,
+    rgba(220, 53, 69, 0.2) 10px,
+    rgba(220, 53, 69, 0.2) 20px
+  );
+  color: #dc3545;
+  border: 1px dashed #dc3545;
+}
+
+.mobile-session-code {
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-bottom: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-session-time {
+  font-size: 0.65rem;
+  opacity: 0.9;
+}
+
+.mobile-session-room {
+  font-size: 0.65rem;
+  opacity: 0.8;
+  margin-top: 0.15rem;
+}
+
+/* Dark mode */
+[data-theme="dark"] .mobile-calendar-header {
+  background-color: rgba(26, 26, 26, 0.5);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-export-btn {
+  background: #2e7d32;
+}
+
+[data-theme="dark"] .mobile-export-btn:hover {
+  background: #1b5e20;
+}
+
+[data-theme="dark"] .mobile-semester-btn {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-semester-btn.active {
+  background: #42a5f5;
+  border-color: #42a5f5;
+}
+
+[data-theme="dark"] .mobile-nav-button {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-nav-button:hover:not(:disabled) {
+  border-color: #42a5f5;
+}
+
+[data-theme="dark"] .mobile-day-headers {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-day-header-spacer,
+[data-theme="dark"] .mobile-day-header {
+  background-color: rgba(26, 26, 26, 0.5);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-time-column {
+  background-color: rgba(26, 26, 26, 0.5);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-time-slot {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-day-column {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-session-block {
+  background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+}
+
+.mobile-calendar-controls {
+  padding: 1rem;
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.mobile-semester-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem;
+  border-radius: 6px;
+}
+
+.mobile-semester-tab {
+  flex: 1;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mobile-semester-tab:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.mobile-semester-tab.active {
+  background: rgba(0, 123, 255, 0.15);
+  font-weight: 600;
+}
+
+.mobile-week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(248, 249, 250, 0.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-bottom: 2px solid var(--border-color);
+  gap: 1rem;
+}
+
+.mobile-week-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.mobile-week-btn:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.mobile-week-btn:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.mobile-week-info {
+  flex: 1;
+  text-align: center;
+}
+
+.mobile-week-number {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.mobile-week-dates {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.mobile-calendar-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.mobile-day-column {
+  margin-bottom: 1.5rem;
+}
+
+.mobile-day-column:last-child {
+  margin-bottom: 0;
+}
+
+.mobile-day-header {
+  margin: 0 0 0.75rem 0;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.mobile-day-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobile-no-classes {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-style: italic;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px dashed var(--border-light);
+}
+
+.mobile-session-block {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-session-code {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.mobile-session-section {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-session-time {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.mobile-session-venue {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.mobile-blockout-block {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(220, 53, 69, 0.1),
+    rgba(220, 53, 69, 0.1) 10px,
+    rgba(220, 53, 69, 0.2) 10px,
+    rgba(220, 53, 69, 0.2) 20px
+  );
+  border: 2px solid rgba(220, 53, 69, 0.5);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.mobile-blockout-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #dc3545;
+  margin-bottom: 0.25rem;
+}
+
+.mobile-blockout-time {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Dark mode */
+[data-theme="dark"] .mobile-calendar-controls,
+[data-theme="dark"] .mobile-week-nav {
+  background-color: rgba(26, 26, 26, 0.5);
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-semester-tabs {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .mobile-semester-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .mobile-semester-tab.active {
+  background: rgba(0, 123, 255, 0.25);
+}
+
+[data-theme="dark"] .mobile-week-btn {
+  background: #1976d2;
+}
+
+[data-theme="dark"] .mobile-week-btn:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+[data-theme="dark"] .mobile-week-btn:disabled {
+  background: #2a2a2a;
+  color: #666666;
+}
+
+[data-theme="dark"] .mobile-day-header {
+  border-color: #555555;
+}
+
+[data-theme="dark"] .mobile-no-classes {
+  background: var(--bg-tertiary);
+  border-color: #555555;
+}
