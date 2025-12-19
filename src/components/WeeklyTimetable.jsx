@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, memo } from 'react';
 import { getScheduleDateRange, getWeekNumbers, isSessionInWeek, timeToMinutes, formatTime } from '../utils/courseParser';
 import './WeeklyTimetable.css';
 
-function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [], onExportClick }) {
+function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [] }) {
   // Count courses per semester
   const semesterCounts = useMemo(() => {
     const counts = {};
@@ -49,10 +49,10 @@ function WeeklyTimetable({ schedule, availableSemesters = [], blockouts = [], on
     });
   }, [schedule, selectedSemester]);
 
-  const { weeks, dateRange } = useMemo(() => {
+  const weeks = useMemo(() => {
     const range = getScheduleDateRange(semesterSchedule);
     const weekList = getWeekNumbers(range.minDate, range.maxDate);
-    return { weeks: weekList, dateRange: range };
+    return weekList;
   }, [semesterSchedule]);
 
   const currentWeek = weeks[currentWeekIndex];

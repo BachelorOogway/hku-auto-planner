@@ -161,9 +161,4 @@ export const clearShoppingCart = () => {
   }
 };
 
-/**
- * Check if there's saved cart data
- */
-export const hasSavedCart = () => {
-  return localStorage.getItem('hku_planner_cart') !== null;
-};
+

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { excelToCSV, excelToJSON, loadDefaultExcel } from '../utils/excelUtils';
+import { excelToJSON, loadDefaultExcel } from '../utils/excelUtils';
 
 function FileUploader({ onDataLoaded }) {
   const [loading, setLoading] = useState(false);
@@ -14,14 +14,11 @@ function FileUploader({ onDataLoaded }) {
     setError(null);
     
     try {
-      // Convert to CSV
-      const csv = await excelToCSV(file);
-      
-      // Also get JSON format for easier processing
+      // Get JSON format for processing
       const json = await excelToJSON(file);
       
       setFileName(file.name);
-      onDataLoaded({ csv, json, fileName: file.name });
+      onDataLoaded({ json, fileName: file.name });
     } catch (err) {
       setError('Error processing file: ' + err.message);
       console.error(err);
@@ -36,10 +33,10 @@ function FileUploader({ onDataLoaded }) {
     
     try {
       // Use relative path that works with Vite's base configuration
-      const { csv, json } = await loadDefaultExcel('./built-in-data.xlsx');
+      const { json } = await loadDefaultExcel('./built-in-data.xlsx');
       
       setFileName('built-in-data.xlsx (default)');
-      onDataLoaded({ csv, json, fileName: 'built-in-data.xlsx' });
+      onDataLoaded({ json, fileName: 'built-in-data.xlsx' });
     } catch (err) {
       setError('Error loading default file: ' + err.message);
       console.error(err);

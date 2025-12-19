@@ -1,29 +1,6 @@
 import ExcelJS from 'exceljs';
 
-/**
- * Convert worksheet to CSV format
- * @param {ExcelJS.Worksheet} worksheet - The worksheet to convert
- * @returns {string} - CSV string
- */
-const worksheetToCSV = (worksheet) => {
-  const rows = [];
-  worksheet.eachRow((row, rowNumber) => {
-    const values = row.values.slice(1); // Remove first empty element
-    rows.push(values.map(v => {
-      // Handle null/undefined
-      if (v === null || v === undefined) return '';
-      // Handle objects (dates, etc)
-      if (typeof v === 'object') return String(v);
-      // Escape quotes and wrap in quotes if contains comma
-      const str = String(v);
-      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-        return `"${str.replace(/"/g, '""')}"`;
-      }
-      return str;
-    }).join(','));
-  });
-  return rows.join('\n');
-};
+
 
 /**
  * Convert worksheet to JSON format
@@ -75,24 +52,7 @@ const worksheetToJSON = (worksheet) => {
   return rows;
 };
 
-/**
- * Convert an Excel file to CSV format
- * @param {File} file - The Excel file to convert
- * @param {number} sheetIndex - The sheet index to convert (default: 0)
- * @returns {Promise<string>} - CSV string
- */
-export const excelToCSV = async (file, sheetIndex = 0) => {
-  const workbook = new ExcelJS.Workbook();
-  const arrayBuffer = await file.arrayBuffer();
-  await workbook.xlsx.load(arrayBuffer);
-  
-  const worksheet = workbook.worksheets[sheetIndex];
-  if (!worksheet) {
-    throw new Error(`Sheet at index ${sheetIndex} not found`);
-  }
-  
-  return worksheetToCSV(worksheet);
-};
+
 
 /**
  * Convert an Excel file to JSON format
@@ -140,33 +100,13 @@ export const loadDefaultExcel = async (path) => {
       throw new Error('No worksheets found in the file');
     }
     
-    const csv = worksheetToCSV(worksheet);
     const json = worksheetToJSON(worksheet);
     
-    return { csv, json };
+    return { json };
   } catch (error) {
     console.error('Error loading default Excel file:', error);
     throw error;
   }
 };
 
-/**
- * Parse CSV string to array of objects
- * @param {string} csv - CSV string
- * @returns {Array} - Array of row objects
- */
-export const parseCSV = (csv) => {
-  const lines = csv.split('\n');
-  const headers = lines[0].split(',').map(h => h.trim());
-  
-  return lines.slice(1)
-    .filter(line => line.trim())
-    .map(line => {
-      const values = line.split(',');
-      const obj = {};
-      headers.forEach((header, index) => {
-        obj[header] = values[index]?.trim() || '';
-      });
-      return obj;
-    });
-};
+

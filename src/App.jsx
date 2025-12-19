@@ -9,7 +9,7 @@ import BlockoutModal from './components/BlockoutModal'
 import CalendarExportModal from './components/CalendarExportModal'
 import ThemeToggle from './components/ThemeToggle'
 import { processCoursesData, generateSchedules } from './utils/courseParser'
-import { hashCourseData, saveShoppingCart, loadShoppingCart, clearShoppingCart } from './utils/storageUtils'
+import { hashCourseData, saveShoppingCart, loadShoppingCart } from './utils/storageUtils'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -55,7 +55,7 @@ function App() {
     setCourseData(data);
     
     if (import.meta.env.DEV) {
-      console.log('Raw data sample:', data.json.slice(0, 3));
+      console.log('Raw data loaded:', data.json.length, 'rows');
     }
     
     // Calculate hash of the data
@@ -414,53 +414,6 @@ function App() {
           <button className="export-calendar-btn" onClick={() => setIsExportModalOpen(true)}>
             Export Calendar
           </button>
-          {(() => {
-            if (selectedPlanIndex === null) return null;
-            
-            const selectedPlan = solutions.plans[selectedPlanIndex];
-            const planCourses = new Set(selectedPlan.courses.map(c => c.courseCode));
-            const originalCourses = new Set(selectedCourses.map(c => c.courseCode));
-            
-            // Find missing courses
-            const missingCourses = [];
-            for (const course of originalCourses) {
-              if (!planCourses.has(course)) {
-                missingCourses.push(course);
-              }
-            }
-            
-            // Check for overlapping courses between semesters
-            const term1 = solutions.availableTerms[0];
-            const term2 = solutions.availableTerms[1] || term1;
-            const sem1Courses = new Set(selectedPlan.courses.filter(c => c.term === term1).map(c => c.courseCode));
-            const sem2Courses = new Set(selectedPlan.courses.filter(c => c.term === term2).map(c => c.courseCode));
-            const overlaps = [];
-            
-            for (const course of sem1Courses) {
-              if (sem2Courses.has(course)) {
-                overlaps.push(course);
-              }
-            }
-            
-            // Display warnings
-            const warnings = [];
-            if (missingCourses.length > 0) {
-              warnings.push(
-                <div key="missing" className="footer-warning">
-                  ⚠️ Warning: The following courses are missing from your plan: <strong>{missingCourses.join(', ')}</strong>
-                </div>
-              );
-            }
-            if (overlaps.length > 0) {
-              warnings.push(
-                <div key="overlap" className="footer-warning">
-                  ⚠️ Warning: The following courses are taken in both semesters: <strong>{overlaps.join(', ')}</strong>
-                </div>
-              );
-            }
-            
-            return warnings.length > 0 ? <>{warnings}</> : null;
-          })()}
         </footer>
       )}
 
