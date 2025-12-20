@@ -258,12 +258,15 @@ function MobileApp() {
           </button>
         )}
         
-        {view === 'select' && selectedCourses.length > 0 && (
+        {view === 'select' && (
           <button 
             className="mobile-action-btn"
             onClick={handleGeneratePlans}
+            disabled={selectedCourses.length === 0}
           >
-            Generate Plans ({selectedCourses.length} courses)
+            {selectedCourses.length === 0
+              ? 'Select a Course to Begin'
+              : `Generate Plans (${selectedCourses.length} courses)`}
           </button>
         )}
         
