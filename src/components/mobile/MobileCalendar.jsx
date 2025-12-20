@@ -290,15 +290,11 @@ function MobileCalendar({ schedule, blockouts, onExport }) {
                             height: `${height}px`
                           }}
                         >
-                          <div className="mobile-session-code">
-                            {session.courseCode} {session.section}
-                          </div>
+                          <div className="mobile-session-code">{session.courseCode}</div>
+                          <div className="mobile-session-section">{session.section} · {session.venue}</div>
                           <div className="mobile-session-time">
-                            {session.startTime} - {session.endTime}
+                            {formatTime(session.startTime)} - {formatTime(session.endTime)}
                           </div>
-                          {session.room && (
-                            <div className="mobile-session-room">{session.room}</div>
-                          )}
                         </div>
                       );
                     })}
@@ -308,131 +304,6 @@ function MobileCalendar({ schedule, blockouts, onExport }) {
             })}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-export default MobileCalendar;
-
-    if (minTime === Infinity) {
-      minTime = 8 * 60;
-      maxTime = 19 * 60;
-    } else {
-      minTime = Math.floor(minTime / 60) * 60;
-      maxTime = Math.ceil(maxTime / 60) * 60;
-    }
-
-    const timeSlots = [];
-    for (let time = minTime; time < maxTime; time += 60) {
-      timeSlots.push(time);
-    }
-
-    return { timeSlots, minTime, maxTime };
-  }, [weekSessions, blockouts]);
-
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  const dayKeys = ['mon', 'tue', 'wed', 'thu', 'fri'];
-
-  return (
-    <div className="mobile-calendar">
-      {/* Semester Selector */}
-      {availableSemesters.length > 1 && (
-        <div className="mobile-calendar-controls">
-          <div className="mobile-semester-tabs">
-            {availableSemesters.map((sem) => (
-              <button
-                key={sem}
-                className={`mobile-semester-tab ${selectedSemester === sem ? 'active' : ''}`}
-                onClick={() => {
-                  setSelectedSemester(sem);
-                  setCurrentWeekIndex(0);
-                }}
-              >
-                {sem.replace(/^\d{4}-\d{2}\s*/, '')}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Week Navigation */}
-      <div className="mobile-week-nav">
-        <button
-          className="mobile-week-btn"
-          onClick={() => setCurrentWeekIndex(prev => Math.max(0, prev - 1))}
-          disabled={currentWeekIndex === 0}
-        >
-          ‹
-        </button>
-        <div className="mobile-week-info">
-          <div className="mobile-week-number">Week {currentWeek?.weekNumber}</div>
-          <div className="mobile-week-dates">
-            {currentWeek && `${currentWeek.startDate.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })} - ${currentWeek.endDate.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })}`}
-          </div>
-        </div>
-        <button
-          className="mobile-week-btn"
-          onClick={() => setCurrentWeekIndex(prev => Math.min(weeks.length - 1, prev + 1))}
-          disabled={currentWeekIndex === weeks.length - 1}
-        >
-          ›
-        </button>
-      </div>
-
-      {/* Calendar Grid */}
-      <div className="mobile-calendar-grid">
-        {weekdays.map((day, dayIndex) => {
-          const dayKey = dayKeys[dayIndex];
-          const daySessions = weekSessions.filter(session => session.days && session.days[dayKey]);
-          
-          // Filter blockouts for current day and semester
-          const dayBlockouts = blockouts.filter(b => {
-            // Check if blockout applies to current semester
-            const semesterMatch = b.applyTo === 'both' || 
-                                 (b.applyTo === 'sem1' && selectedSemester?.includes('Semester 1')) ||
-                                 (b.applyTo === 'sem2' && selectedSemester?.includes('Semester 2'));
-            
-            // Check if blockout is for current day
-            const dayMatch = b.day === dayKey;
-            
-            return semesterMatch && dayMatch;
-          });
-
-          return (
-            <div key={day} className="mobile-day-column">
-              <h3 className="mobile-day-header">{day}</h3>
-              <div className="mobile-day-content">
-                {daySessions.length === 0 && dayBlockouts.length === 0 ? (
-                  <div className="mobile-no-classes">No classes</div>
-                ) : (
-                  <>
-                    {daySessions.map((session, idx) => (
-                      <div key={idx} className="mobile-session-block">
-                        <div className="mobile-session-code">{session.courseCode}</div>
-                        <div className="mobile-session-section">{session.section}</div>
-                        <div className="mobile-session-time">
-                          {session.startTime} - {session.endTime}
-                        </div>
-                        {session.venue && (
-                          <div className="mobile-session-venue">{session.venue}</div>
-                        )}
-                      </div>
-                    ))}
-                    {dayBlockouts.map((blockout, idx) => (
-                      <div key={`blockout-${idx}`} className="mobile-blockout-block">
-                        <div className="mobile-blockout-name">{blockout.name}</div>
-                        <div className="mobile-blockout-time">
-                          {blockout.startTime} - {blockout.endTime}
-                        </div>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </div>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
