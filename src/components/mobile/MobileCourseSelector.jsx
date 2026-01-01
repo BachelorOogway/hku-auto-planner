@@ -200,11 +200,12 @@ function MobileCourseSelector({ coursesData, selectedCourses, onCourseSelect, se
           className="mobile-search-input"
         />
         {overloadEnabled && (
-          <div style={{ marginTop: '8px', display: 'flex', gap: '8px', alignItems: 'center', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <label style={{ fontSize: '0.9rem' }}>Max per semester:</label>
+          <div className="mobile-overload-inline-container">
+            <div className="mobile-overload-inline-row">
+              <label className="mobile-overload-inline-label">Max per semester:</label>
               <input
                 type="number"
+                className="mobile-overload-inline-input"
                 min={7}
                 max={11}
                 value={localInputValue}
@@ -229,7 +230,6 @@ function MobileCourseSelector({ coursesData, selectedCourses, onCourseSelect, se
                     setLocalError('Please enter a number.');
                   }
                 }}
-                style={{ width: '4rem' }}
               />
             </div>
             {localError && (
@@ -237,11 +237,10 @@ function MobileCourseSelector({ coursesData, selectedCourses, onCourseSelect, se
             )}
           </div>
         )}
-        <div style={{ marginTop: '8px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div className="mobile-overload-container">
           <button
-            className="cart-clear-btn-secondary"
+            className="mobile-overload-btn"
             onClick={() => setShowOverloadModal(true)}
-            style={{ padding: '6px 10px' }}
           >
             Overload Options
           </button>

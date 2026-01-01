@@ -22,6 +22,9 @@ function OverloadModal({ isOpen, onClose, overloadEnabled, setOverloadEnabled, m
         return;
       }
       setMaxPerSemester(parsed);
+    } else {
+      // When overload is disabled, reset to default value
+      setMaxPerSemester(6);
     }
     setOverloadEnabled(localEnabled);
     onClose();
@@ -34,11 +37,11 @@ function OverloadModal({ isOpen, onClose, overloadEnabled, setOverloadEnabled, m
         <div className="overload-modal-body">
           <label className="overload-row">
             <input type="checkbox" checked={localEnabled} onChange={(e) => setLocalEnabled(e.target.checked)} />
-            <span style={{ marginLeft: '8px' }}>Enable Overload</span>
+            <span className="overload-checkbox-label">Enable Overload</span>
           </label>
 
           <label className="overload-row">
-            <span style={{ minWidth: '160px', display: 'inline-block' }}>Max per semester</span>
+            <span className="overload-label">Max per semester</span>
             <input
               className="overload-input"
               type="number"
@@ -53,8 +56,8 @@ function OverloadModal({ isOpen, onClose, overloadEnabled, setOverloadEnabled, m
         </div>
 
         <div className="overload-modal-actions">
-          <button className="modal-btn" onClick={onClose}>Cancel</button>
-          <button className="modal-btn primary" onClick={handleSave}>Save</button>
+          <button className="overload-btn-cancel" onClick={onClose}>Cancel</button>
+          <button className="overload-btn-save" onClick={handleSave}>Save</button>
         </div>
       </div>
     </div>

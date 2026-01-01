@@ -250,10 +250,11 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
           <p className="info-text">
             {coursesData.totalCourses} courses available · {selectedCourses.length}{!overloadEnabled && `/${MAX_TOTAL_COURSES}`} selected
             {overloadEnabled && (
-              <span style={{ marginLeft: '1rem', fontSize: '0.9rem' }}>
+              <span className="overload-info-inline">
                 Max per semester:
                 <input
                   type="number"
+                  className="overload-inline-input"
                   min={7}
                   max={11}
                   value={localInputValue}
@@ -278,7 +279,6 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
                       setLocalInputError('Please enter a number.');
                     }
                   }}
-                  style={{ width: '4rem', marginLeft: '0.5rem' }}
                 />
                 {localInputError && (
                   <div className="input-error-badge">{localInputError}</div>
@@ -487,10 +487,9 @@ function CourseSelector({ coursesData, selectedCourses, onCourseSelect, onCourse
           })()}
           {/* Overload Options button - only appears during course selection stage */}
           <button
-            className="cart-clear-btn-secondary"
+            className="cart-overload-btn"
             onClick={() => setShowOverloadModal(true)}
             title="Open overload options"
-            style={{ marginLeft: '0.5rem' }}
           >
             Overload Options
           </button>
